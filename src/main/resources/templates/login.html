@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<div class="login-box z-depth-2">
+    <h6 id="loginFail" ></h6>
+    <h4>Login</h4>
+
+    <!--<form class="login-form" action="/login" method="POST">-->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="username" name="username" type="username" class="validate">
+                <label for="username">이름</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" name="password" type="password"
+                       class="validate"> <label for="password">Password</label>
+            </div>
+        </div>
+        <button onclick="login()" >로그인</button>
+
+    <p class="alternatives-separator">or</p>
+
+    <a class="github-login waves-effect waves-light btn" href="#">
+        <div class="github-icon"></div>
+        <div class="github-login-text">github로 로그인</div>
+    </a>
+
+</div>
+
+<script>
+    $(document).ready(function() {
+
+    });
+
+
+    function login(){
+
+
+        var username = $('#username').val();
+        var password = $('#password').val();
+
+
+        let user = {
+            "username" : username ,
+            "password" : password
+        }
+
+
+        const url = "http://localhost:7000/login";
+        fetch(url, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+
+            body : JSON.stringify(user),
+
+        }).then((response) => response.json())
+          .then(response => {
+            if( response.result.accessToken != null){
+                    localStorage.setItem("token", response.result.accessToken);
+                    window.location.href = 'http://localhost:7000';
+                 }
+          })
+
+
+
+<!--            $.ajax({-->
+
+<!--              type: 'POST',-->
+
+<!--              url: 'http://localhost:7000/login',-->
+
+<!--              data: {-->
+<!--                    "username" : username.value,-->
+<!--                    "password" : password.value-->
+
+<!--              },-->
+
+
+<!--              success: function(resp){-->
+<!--                  console.log(resp.accessToken);-->
+<!--                 console.log(resp);-->
+<!--                 console.log(resp.getAllResponseHeaders());-->
+
+<!--              },-->
+
+<!--              error : function(){-->
+<!--                  console.log("error");-->
+
+<!--              }-->
+
+<!--            });-->
+
+    }
+
+
+
+</script>
