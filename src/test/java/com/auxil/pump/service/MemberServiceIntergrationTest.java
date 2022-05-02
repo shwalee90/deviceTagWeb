@@ -64,34 +64,5 @@ class MemberServiceIntergrationTest {
 
     }
     
-    @Test
-    public void memException(){
-        //given
-        Member member1 = new Member();
-        member1.setName("spr");
 
-        Member member2 = new Member();
-        member2.setName("spr");
-
-        //when
-        memberService.join(member1);
-
-        IllegalStateException e = org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class
-                , () -> memberService.join(member2));
-
-
-        Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다");
-
-    }
-
-
-    
-    
-    @Test
-    void findMembers() {
-    }
-
-    @Test
-    void findOne() {
-    }
 }

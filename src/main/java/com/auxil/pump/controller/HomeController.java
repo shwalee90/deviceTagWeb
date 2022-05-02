@@ -9,6 +9,7 @@ import com.auxil.pump.security.JwtTokenProvider;
 import com.auxil.pump.service.AuthService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.HttpCookie;
+import java.util.Date;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Controller
-public class HomeController {
+public class HomeController implements ErrorController {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,34 +39,47 @@ public class HomeController {
     private final AuthService authService;
 
 
-    @GetMapping("/")
-    public String home(HttpServletRequest request, Model model){
-
-        HttpSession session = request.getSession(false);
-       // System.out.println(token);
-
-        if (session != null) {
-            System.out.println("session (O)");
-
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            SecurityMember user = (SecurityMember)principal;
-
-            String userName = ((SecurityMember) principal).getUsername();
-
-
-            model.addAttribute("userName" , userName);
-            model.addAttribute("role" , ((SecurityMember) principal).getAuthorities());
-
-
-        }else{
-            System.out.println("session (X)");
-        }
-
-
-
-        return "home";
+    @RequestMapping({"/", "/error"})
+    public String index() {
+        return "index.html";
     }
+
+
+
+
+
+
+//    @GetMapping("/")
+//    public String home(HttpServletRequest request, Model model){
+//
+///       HttpSession session = request.getSession(false);
+//       // System.out.println(token);
+//
+//        if (session != null) {
+//            System.out.println("session (O)");
+//
+//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//            SecurityMember user = (SecurityMember)principal;
+//
+//            String userName = ((SecurityMember) principal).getUsername();
+//
+//
+//            model.addAttribute("userName" , userName);
+//            model.addAttribute("role" , ((SecurityMember) principal).getAuthorities());
+//
+//
+//        }else{
+//            System.out.println("session (X)");
+//        }
+//
+//
+//
+//        return "home";
+
+//
+//        return "안녕하세요. 현재 서버시간은 "+new Date() +"입니다. \n";
+//    }
 
 
 

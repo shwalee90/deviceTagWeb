@@ -7,6 +7,7 @@ import com.auxil.pump.repository.MemberRepository;
 import com.auxil.pump.service.SecurityMemberService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,15 +25,17 @@ import java.util.*;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-
+    @Lazy
     private final SecurityMemberService securityMemberService;
 
     private  String secretKey = "secretkey";
 
     // 토큰 유효시간 30분
+    @Lazy
     private final long accessExpiredTime =  60 * 60 * 1 * 60 * 1000L;
 
     // 3분 refresh
+    @Lazy
     private final long refreshExpireTime =   60 * 60 * 3 * 60 * 2000L ;
 
 

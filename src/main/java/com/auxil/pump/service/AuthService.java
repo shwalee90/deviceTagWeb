@@ -9,6 +9,7 @@ import com.auxil.pump.repository.AuthRepository;
 import com.auxil.pump.security.ErrorCode;
 import com.auxil.pump.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,23 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
-    private final AuthRepository authRepository;
+    private JwtTokenProvider jwtTokenProvider;
+
+    private AuthenticationManager authenticationManager;
+
+    private AuthRepository authRepository;
+
+
+    AuthService( @Lazy JwtTokenProvider jwtTokenProvider , @Lazy AuthenticationManager authenticationManager, @Lazy AuthRepository authRepository ){
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManager = authenticationManager;
+        this.authRepository = authRepository;
+    }
+
+
+
 
     public ApiResponse  login(AuthDTO.LOGINDTO logindto) {
         ResponseMap result = new ResponseMap();

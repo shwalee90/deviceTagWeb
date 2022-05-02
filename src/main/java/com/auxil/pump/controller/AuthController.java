@@ -7,6 +7,7 @@ import com.auxil.pump.security.JwtTokenProvider;
 import com.auxil.pump.service.AuthService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +26,17 @@ import java.util.HashMap;
 @RestController
 public class AuthController {
 
+    @Lazy
     private final PasswordEncoder passwordEncoder;
+    @Lazy
     private final JwtTokenProvider jwtTokenProvider;
+    @Lazy
     private final SpringDataJpaMemberRepository userRepository;
-
+    @Lazy
     private final AuthService authService;
+
+
+
 
 
     @PostMapping("/login")
