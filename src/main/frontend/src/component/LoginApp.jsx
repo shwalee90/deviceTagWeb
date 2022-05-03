@@ -6,6 +6,7 @@ import ErrorComponent from './ErrorComponent.jsx'
 import HeaderComponent from './HeaderComponent.jsx'
 import FooterComponent from './FooterComponent.jsx'
 import WelcomeComponent from './WelcomeComponent.jsx'
+import MemberNewComponent from './MemberNewComponent.jsx'
 import TestComponent from './TestComponent.jsx'
 import { withRouter } from 'react-router'
 
@@ -19,11 +20,13 @@ class LoginApp extends Component {
                     <div>
                         <HeaderWithRouter/>
                         <Switch>
-                            <Route path="/" exact component={LoginComponent}/>
-                            <Route path="/login" component={LoginComponent}/>
-                            <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent}/>
-                            <AuthenticatedRoute path="/test" component={TestComponent}/>
-                            <Route component={ErrorComponent}/>
+                             <Route exact path="/"  component={WelcomeComponent}/>
+                             <Route exact path="/login" component={LoginComponent}/>
+                             <Route exact path="/members/new"  component={MemberNewComponent}/>
+                             <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent}/>
+                             <AuthenticatedRoute path="/test" component={TestComponent}/>
+                             <Route component={ErrorComponent}/>
+
                         </Switch>
                         <FooterComponent/>
                     </div>
@@ -34,3 +37,5 @@ class LoginApp extends Component {
 }
 
 export default LoginApp
+
+

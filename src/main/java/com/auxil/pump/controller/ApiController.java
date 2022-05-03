@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 public class ApiController {
 
     @GetMapping("/api")
@@ -90,12 +90,7 @@ public class ApiController {
 
         String token = request.getParameter("token");
 
-        try {
-            request = new RequestWrapper((HttpServletRequest ) request , token );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("token : " + token);
 
         System.out.println("token2 : " +request.getHeader("token"));
 

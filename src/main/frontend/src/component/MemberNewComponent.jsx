@@ -3,37 +3,27 @@ import AuthenticationService from './AuthenticationService.js'
 import axios from "axios";
 
 
-class LoginComponent extends Component {
+class MemberNewComponent extends Component {
 
     constructor(props) {
         super(props)
 
-         console.log('cons');
+        console.log('cons');
 
 
         this.state = {
-            username: localStorage.getItem("authenticatedUser") || '',
+            username: '',
             password: '',
-            token: localStorage.getItem("token") || '',
             hasLoginFailed: false,
             showSuccessMessage: false
         }
+
         this.handleChange = this.handleChange.bind(this)
-        this.loginClicked = this.loginClicked.bind(this)
-    }
+        this.newMemberClicked = this.newMemberClicked.bind(this)
 
-    componentDidUpdate(prevProps){
-
-        console.log('update');
-        if(prevProps.location.pathname !== this.props.location.pathname){
-            console.log(true);
-            this.setState({loading : true});
-        }
 
 
     }
-
-
 
     handleChange(event) {
         this.setState(
@@ -46,18 +36,16 @@ class LoginComponent extends Component {
 
 
 
-    loginClicked() {
+    newMemberClicked() {
             let data = {username : this.state.username,
                         password : this.state.password};
 
-             axios.post("/login" , JSON.stringify(data),{
+             axios.post("/members/new" , JSON.stringify(data),{
                 headers: {
                                   "Content-Type": `application/json`,
                                 }})
             .then(response => {
-                         console.log(response)
-                         AuthenticationService.registerSuccessfulLoginForJwt(this.state.username,response.data.result.accessToken)
-                         this.props.history.push(`/welcome`)
+                      this.props.history.push(`/welcome`)
                      }).catch( () =>{
                 this.setState({showSuccessMessage:false})
                 this.setState({hasLoginFailed:true})
@@ -70,17 +58,15 @@ class LoginComponent extends Component {
     render() {
         return (
             <div>
-                <h1>Login</h1>
-                <div className="container">
-                    {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                    {this.state.showSuccessMessage && <div>Login Sucessful</div>}
+                <h1>New Member</h1>
+                <div className="joinForm">
                     User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
                     Password: <input type="password" name="password" value={this.state.password}  onChange={this.handleChange}/>
-                    <button className="btn btn-success" onClick={this.loginClicked}>Login</button>
+                    <button className="btn btn-success" onClick={this.newMemberClicked}>Login</button>
                 </div>
             </div>
         )
     }
 }
 
-export default LoginComponent
+export default MemberNewComponent
