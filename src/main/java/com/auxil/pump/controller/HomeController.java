@@ -93,9 +93,14 @@ public class HomeController implements ErrorController {
 
 
     @GetMapping("/login")
-    public String login(){
+    public void login(HttpServletRequest request){
 
-        return "login";
+        String token = request.getParameter("token");
+
+        System.out.println("token : " + token);
+
+        System.out.println("token2 : " +request.getHeader("token"));
+
     }
 
 

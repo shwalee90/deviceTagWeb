@@ -9,6 +9,8 @@ import WelcomeComponent from './WelcomeComponent.jsx'
 import MemberNewComponent from './MemberNewComponent.jsx'
 import TestComponent from './TestComponent.jsx'
 import { withRouter } from 'react-router'
+import PumpHomeComponent from './PumpHomeComponent.jsx'
+
 
 class LoginApp extends Component {
     render() {
@@ -20,11 +22,13 @@ class LoginApp extends Component {
                     <div>
                         <HeaderWithRouter/>
                         <Switch>
+
                              <Route exact path="/"  component={WelcomeComponent}/>
                              <Route exact path="/login" component={LoginComponent}/>
                              <Route exact path="/members/new"  component={MemberNewComponent}/>
-                             <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent}/>
+                             <AuthenticatedRoute path="/welcome" component={WelcomeComponent}/>
                              <AuthenticatedRoute path="/test" component={TestComponent}/>
+                             <AuthenticatedRoute path="/auth/pump" component={PumpHomeComponent}/>
                              <Route component={ErrorComponent}/>
 
                         </Switch>

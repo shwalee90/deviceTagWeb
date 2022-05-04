@@ -72,12 +72,12 @@ public class ApiController {
 
 
 
-    @PostMapping ("/auth/home")
-    public String authHomeP(){
+    @GetMapping ("/auth/pump")
+    public void authHomeP(HttpServletRequest request){
+
+        System.out.println("token2 : " +request.getHeader("token"));
 
 
-
-        return "auth/home";
     }
 
 

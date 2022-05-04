@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
 
-class WelcomeComponent extends Component {
+class PumpHomeComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -12,20 +12,12 @@ class WelcomeComponent extends Component {
         }
         this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
         this.handleError = this.handleError.bind(this)
-
-
-
-
-
-
-
-
     }
 
     render() {
         return (
             <>
-                <h1>Welcome!</h1>
+                <h1>PUMP</h1>
                 <div className="container">
                     Welcome {this.props.match.params.name}.
                 </div>
@@ -38,23 +30,11 @@ class WelcomeComponent extends Component {
                     {this.state.welcomeMessage}
                 </div>
 
-                <div className="container">
-                    Check if axiosInterceptors is working well!<br></br>
-                    <button onClick={this.checkHeader}
-                        className="btn btn-success">checkHeader</button>
-                </div>
 
 
             </>
         )
     }
-
-    checkHeader(){
-
-
-
-    }
-
 
     retrieveWelcomeMessage() {
         AuthenticationService.executeHelloService()
@@ -84,4 +64,4 @@ class WelcomeComponent extends Component {
 }
 
 
-export default WelcomeComponent
+export default PumpHomeComponent
