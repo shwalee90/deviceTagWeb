@@ -1,0 +1,34 @@
+package com.auxil.pump.domain;
+
+import lombok.*;
+
+import javax.persistence.*;
+
+@Setter
+@Getter
+@Entity
+@ToString
+public class TbEquipInfo {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name = "EQUIP_ID")
+    private long equip_id;
+
+    @Column(name = "EQUIP_TYPE" , nullable = false )
+    private long equip_type ;
+
+    @Column(name = "EQUIP_ALIAS" , nullable = false , unique = true)
+    private String equip_alias;
+
+    @Column(name = "TYPE_ID" , nullable = false , unique = true)
+    private long type_id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "TYPE_ID")
+    private TbEquipType tet;
+
+
+
+
+}

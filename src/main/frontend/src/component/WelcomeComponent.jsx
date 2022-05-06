@@ -49,11 +49,7 @@ class WelcomeComponent extends Component {
         )
     }
 
-    checkHeader(){
 
-
-
-    }
 
 
     retrieveWelcomeMessage() {
