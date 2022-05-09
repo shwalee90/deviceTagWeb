@@ -1,0 +1,1 @@
+insert into TB_EQUIP_INFO ( equip_id , equip_alias, type_id) values(  1 , 'test' , 1);

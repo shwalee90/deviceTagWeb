@@ -17,15 +17,22 @@ public class TbMemoryInfo {
     @Column(name = "ID")
     private long id;
 
-    @Column(name = "TYPE_ID" , nullable = false , unique = true)
-    private long type_id;
+    @Column(name = "MEMORY_DEVICE_NAME" , nullable = false)
+    private String memory_device_name;
 
+    @Column(name = "MEMORY_DEVICE_TYPE" , nullable = false)
+    private String memory_device_type;
 
+    @Column(name = "MULTIPLE_WRITE_FUNCTION" , nullable = false)
+    private String multiple_write_function;
+
+    @Column(name = "DESCRIPTION")
+    private String description;
 
 
     @ManyToOne
-    @JoinColumn(name = "TYPE_ID")
-    private TbEquipType tet;
+    @JoinColumn(name = "EQUIP_TYPE")
+    private TbEquipType equip_type;
 
 
 

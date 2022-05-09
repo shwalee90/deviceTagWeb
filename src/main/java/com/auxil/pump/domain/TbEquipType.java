@@ -20,7 +20,7 @@ public class TbEquipType {
     private long type_id;
 
     @Column(name = "EQUIP_TYPE" , nullable = false )
-    private long equip_type ;
+    private String equip_type ;
 
     @Column(name = "DESCRIPTION" , nullable = true )
     private String description;
