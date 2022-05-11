@@ -23,22 +23,18 @@ class MemberServiceIntergrationTest {
     @Autowired SecurityMemberService securityMemberService;
 
 
-    @Test
-    void loadUser(){
-
-
-
-
-
-        UserDetails ud =  securityMemberService.loadUserByUsername("shwalee");
-
-
-
-
-        System.out.println(ud.getUsername());
-        System.out.println(ud.getPassword());
-
-    }
+//    @Test
+//    void loadUser(){
+//
+//
+//
+//        UserDetails ud =  securityMemberService.loadUserByUsername("shwalee");
+//
+//
+//        System.out.println(ud.getUsername());
+//        System.out.println(ud.getPassword());
+//
+//    }
 
 
     @Test

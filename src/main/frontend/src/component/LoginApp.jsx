@@ -10,7 +10,8 @@ import MemberNewComponent from './MemberNewComponent.jsx'
 import TestComponent from './TestComponent.jsx'
 import { withRouter } from 'react-router'
 import PumpHomeComponent from './PumpHomeComponent.jsx'
-
+import EquipInfoComponent from './EquipInfoComponent.jsx'
+import TagInfoComponent from './TagInfoComponent.jsx'
 
 class LoginApp extends Component {
     render() {
@@ -22,13 +23,16 @@ class LoginApp extends Component {
                     <div>
                         <HeaderWithRouter/>
                         <Switch>
-
                              <Route exact path="/"  component={WelcomeComponent}/>
                              <Route exact path="/login" component={LoginComponent}/>
                              <Route exact path="/members/new"  component={MemberNewComponent}/>
                              <AuthenticatedRoute path="/welcome" component={WelcomeComponent}/>
                              <AuthenticatedRoute path="/test" component={TestComponent}/>
-                             <AuthenticatedRoute path="/auth/pump" component={PumpHomeComponent}/>
+                             <Route
+                                 path="/auth/pump/:equipid" component={PumpHomeComponent}
+                             />
+                             <Route path="/auth/pump" component={PumpHomeComponent}
+                                                          />
                              <Route component={ErrorComponent}/>
 
                         </Switch>

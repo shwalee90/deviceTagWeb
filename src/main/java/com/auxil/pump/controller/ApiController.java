@@ -1,11 +1,13 @@
 package com.auxil.pump.controller;
 
 import com.auxil.pump.aop.RequestWrapper;
+import com.auxil.pump.domain.TbEquipInfo;
+import com.auxil.pump.service.AuthService;
+import com.auxil.pump.service.TbService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,10 +27,16 @@ import java.io.PrintWriter;
 import java.net.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 public class ApiController {
+
+    @Lazy
+    private final TbService tbService;
+
 
     @GetMapping("/api")
     public String oauthKakao(
@@ -77,6 +85,20 @@ public class ApiController {
 
         System.out.println("token2 : " +request.getHeader("token"));
 
+
+    }
+
+
+    @GetMapping ("/auth/equip")
+    @ResponseBody
+    public ResponseEntity<List<TbEquipInfo>> authEquip(HttpServletRequest request){
+
+        System.out.println("token2 : " +request.getHeader("token"));
+
+        List<TbEquipInfo> equipInfos = tbService.findAll();
+
+
+        return new ResponseEntity<List<TbEquipInfo>>(equipInfos , HttpStatus.OK) ;
 
     }
 

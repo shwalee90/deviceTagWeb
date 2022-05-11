@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
 import axios from "axios";
+import '../css/HeaderComponent.css';
+
+
 
 class HeaderComponent extends Component {
     render() {
@@ -46,40 +49,28 @@ class HeaderComponent extends Component {
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
 
-
-                    <ul className="navbar-nav">
+                <ul>
+                    <li className="navbar-nav">
                         {isUserLoggedIn && <li><Link className="nav-link" to="/welcome">Home</Link></li>}
-                    </ul>
+                    </li>
 
-                    <ul className="navbar-nav">
-                        {isUserLoggedIn && <li><Link className="nav-link" to="/auth/pump">pump home</Link></li>}
-                        {isUserLoggedIn && <button className="btn btn-success" onClick={this.movePump}>PUMP</button> }
-                    </ul>
+                    <li className="navbar-nav">
+                        {isUserLoggedIn && <li><Link className="nav-link" to="/auth/pump/1">pump home</Link></li>}
+                    </li>
 
 
-                    <ul className="navbar-nav navbar-collapse justify-content-end">
+                    <li className="navbar-nav navbar-collapse justify-content-end">
                         {!isUserLoggedIn && <li><Link className="nav-link" to="/login">Login</Link></li>}
                         {<li><Link className="nav-link" to="/members/new">Join</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li>}
 
-                    </ul>
+                    </li>
+                </ul>
                 </nav>
             </header>
         )
     }
 
-
-    movePump(){
-
-                     axios.get("/auth/pump" , {
-                        headers: {
-                                          "Content-Type": `application/json`,
-                                          "token" : localStorage.getItem('token')
-                                        }})
-                    .then(response => {
-                            window.location.href("http://localhost:7000/auth/pump");
-                     })
-                }
 
 
 

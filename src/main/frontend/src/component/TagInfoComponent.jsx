@@ -1,13 +1,8 @@
 import React, {Component} from 'react'
-import {Link , useParams, useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
-import '../css/PumpHomeComponent.css';
-import EquipInfoComponent from './EquipInfoComponent.jsx'
-import TagInfoComponent from './TagInfoComponent.jsx'
 
-
-class PumpHomeComponent extends Component {
-
+class TagInfoComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -19,21 +14,14 @@ class PumpHomeComponent extends Component {
         this.handleError = this.handleError.bind(this)
     }
 
-        render() {
-            return (
-                <>
-                    <div>
-                          <div class="left">
-                            <EquipInfoComponent data="[]"/>
-                          </div>
-                          <div class="right">
-                            <TagInfoComponent/>
-                          </div>
-                    </div>
-                </>
-            )
-        }
+    render() {
+        return (
+            <>
+                <h1>TAG</h1>
 
+            </>
+        )
+    }
 
 
 
@@ -66,4 +54,4 @@ class PumpHomeComponent extends Component {
 }
 
 
-export default PumpHomeComponent
+export default TagInfoComponent
