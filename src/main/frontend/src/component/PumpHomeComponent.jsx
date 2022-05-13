@@ -11,15 +11,17 @@ class PumpHomeComponent extends Component {
 
     constructor(props) {
         super(props)
-        this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this)
-        this.state = {
-            welcomeMessage : ''
-        }
-        this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
-        this.handleError = this.handleError.bind(this)
+                   this.state = {
+                            equipid : '',
+                          }
     }
 
+
+
         render() {
+
+            let pam = this.props.match;
+             console.log( "render : "+ pam.params.equipid);
             return (
                 <>
                     <div>
@@ -27,7 +29,7 @@ class PumpHomeComponent extends Component {
                             <EquipInfoComponent data="[]"/>
                           </div>
                           <div class="right">
-                            <TagInfoComponent/>
+                            <TagInfoComponent equipid={pam.params.equipid}/>
                           </div>
                     </div>
                 </>

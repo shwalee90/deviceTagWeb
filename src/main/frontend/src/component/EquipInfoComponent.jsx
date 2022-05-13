@@ -9,8 +9,6 @@ class EquipInfoComponent extends Component {
 
     constructor(props) {
 
-    console.log("==EquipInfoComponent==")
-
        super(props)
        this.state = {
          data : [],
@@ -41,25 +39,34 @@ class EquipInfoComponent extends Component {
 
 
 
-
     render() {
 
         const { data } = this.props;
 
-        let list =  this.state.data.data;
+        let list = this.state.data.data;
+
+
+       //list  이 없는 경우도 있다.
+       //if(list == null){
+       //     li_list = null;
+       // }else{
+       //     li_list = list.map((el,key) => (<li> <Link to='/auth/pump/{el.equip_id}'>{el.equip_alias} </Link></li>));
+       // }
+
+
 
         return (
             <>
                 <h1>Equip</h1>
                 <div>
-                 {list ? list.map( (el, key) => {
-                            return(
-                              <div className='list_grid list_data' key={key}>
-                                <div> {el.equip_alias} </div>
-                              </div>
-                            )
-                          })
-                            : null}
+                   {list ? list.map( (el) => {
+                              return(
+                                <ul  key={el.equip_id}>
+                                  <li> <Link to={`/auth/pump/${el.equip_id}`}> {el.equip_alias} </Link></li>
+                                </ul>
+                              )
+                            })
+                              : null}
                 </div>
             </>
         )
@@ -68,30 +75,9 @@ class EquipInfoComponent extends Component {
 
 
 
-    retrieveWelcomeMessage() {
-        AuthenticationService.executeHelloService()
-        .then( response => this.handleSuccessfulResponse(response) )
-        .catch( error => this.handleError(error) )
-    }
 
-    handleSuccessfulResponse(response) {
-        console.log(response)
-        this.setState({welcomeMessage: response.data})
-    }
 
-    handleError(error) {
-        console.log(error.response)
-        let errorMessage = '';
 
-        if(error.message)
-            errorMessage += error.message
-
-        if(error.response && error.response.data) {
-            errorMessage += error.response.data.message
-        }
-
-        this.setState({welcomeMessage: errorMessage})
-    }
 
 }
 

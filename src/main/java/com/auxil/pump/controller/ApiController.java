@@ -2,6 +2,7 @@ package com.auxil.pump.controller;
 
 import com.auxil.pump.aop.RequestWrapper;
 import com.auxil.pump.domain.TbEquipInfo;
+import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.service.AuthService;
 import com.auxil.pump.service.TbService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -95,15 +96,24 @@ public class ApiController {
 
         System.out.println("token2 : " +request.getHeader("token"));
 
-        List<TbEquipInfo> equipInfos = tbService.findAll();
+        List<TbEquipInfo> equipInfos = tbService.findEquipAll();
 
 
         return new ResponseEntity<List<TbEquipInfo>>(equipInfos , HttpStatus.OK) ;
 
     }
 
+    @GetMapping ("/auth/tagInfo/{equipid}")
+    @ResponseBody
+    public ResponseEntity<List<TbTagBase>> authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
 
 
+        List<TbTagBase> tagInfos = tbService.findTagById(equipid);
+
+
+        return new ResponseEntity<List<TbTagBase>>(tagInfos , HttpStatus.OK) ;
+
+    }
 
 
 

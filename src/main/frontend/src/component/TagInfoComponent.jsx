@@ -1,24 +1,58 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import {Link , withRouter  } from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
-
+import axios from "axios";
 class TagInfoComponent extends Component {
 
-    constructor(props) {
-        super(props)
-        this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this)
-        this.state = {
-            welcomeMessage : ''
-        }
-        this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
-        this.handleError = this.handleError.bind(this)
-    }
+        constructor(props) {
+
+
+
+           super(props)
+
+           this.state = {
+                    equipid : this.props.equipid,
+                  }
+
+         }
+
+
+             componentDidMount() {
+                this._getListData()
+
+              }
+
+              _getListData = async function() {
+                const data_list = await axios(`/auth/tagInfo/${this.state.equipid}`, {
+                  method : 'GET',
+                  headers: {
+                             "Content-Type": `application/json`,
+                             "token" : localStorage.getItem('token')
+                                                                 }
+                })
+
+
+                this.setState({ data : data_list })
+
+
+
+              }
+
+
+
+
+
 
     render() {
+
+
+
+
+
+
         return (
             <>
                 <h1>TAG</h1>
-
             </>
         )
     }
@@ -26,30 +60,6 @@ class TagInfoComponent extends Component {
 
 
 
-    retrieveWelcomeMessage() {
-        AuthenticationService.executeHelloService()
-        .then( response => this.handleSuccessfulResponse(response) )
-        .catch( error => this.handleError(error) )
-    }
-
-    handleSuccessfulResponse(response) {
-        console.log(response)
-        this.setState({welcomeMessage: response.data})
-    }
-
-    handleError(error) {
-        console.log(error.response)
-        let errorMessage = '';
-
-        if(error.message)
-            errorMessage += error.message
-
-        if(error.response && error.response.data) {
-            errorMessage += error.response.data.message
-        }
-
-        this.setState({welcomeMessage: errorMessage})
-    }
 
 }
 
