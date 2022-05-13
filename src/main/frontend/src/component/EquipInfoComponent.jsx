@@ -31,9 +31,10 @@ class EquipInfoComponent extends Component {
                                                          }
         })
 
-        console.log(data_list);
 
         this.setState({ data : data_list })
+
+
 
       }
 
@@ -45,13 +46,13 @@ class EquipInfoComponent extends Component {
 
         const { data } = this.props;
 
-        console.log(data.data);
+        let list =  this.state.data.data;
 
         return (
             <>
                 <h1>Equip</h1>
                 <div>
-                 {data.data ? data.data.map( (el, key) => {
+                 {list ? list.map( (el, key) => {
                             return(
                               <div className='list_grid list_data' key={key}>
                                 <div> {el.equip_alias} </div>
