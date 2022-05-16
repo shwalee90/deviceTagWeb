@@ -12,7 +12,7 @@ class PumpHomeComponent extends Component {
     constructor(props) {
         super(props)
                    this.state = {
-                            equipid : '',
+                            equipid : 0,
                           }
     }
 

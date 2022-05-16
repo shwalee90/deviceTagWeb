@@ -17,29 +17,32 @@ public class TbTagBase {
     @Column(name = "ID")
     private long tag_id;
 
+    @Column(name= "TAGNAME")
+    private String tagname;
+
     @Column(name = "DESCRIPTION")
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "Equipid" , nullable = false)
+    @JoinColumn(name = "EQUIPID" , nullable = false)
     private TbEquipInfo equip_id;
 
-    @Column(name = "MemoryDeviceName" , nullable = false)
+    @Column(name = "MEMORY_DEVICE_NAME" , nullable = false)
     private String memorydevicename;
 
-    @Column(name = "BlockNo" , nullable = false)
+    @Column(name = "BLOCK_NO" , nullable = false)
     private int blockno;
 
-    @Column(name = "Address" , nullable = false)
+    @Column(name = "ADDRESS" , nullable = false)
     private int address;
 
-    @Column(name = "DataType" , nullable = false)
+    @Column(name = "DATA_TYPE" , nullable = false)
     private String datatype;
 
-    @Column(name = "TagAccess" , nullable = false)
+    @Column(name = "TAG_ACCESS" , nullable = false)
     private String tagaccess;
 
-    @Column(name = "DisplayAddress")
+    @Column(name = "DISPLAY_ADDRESS")
     private String displayaddress;
 
     @Column(name = "UNISEQNO" , nullable = false)

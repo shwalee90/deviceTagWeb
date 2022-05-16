@@ -107,6 +107,7 @@ public class ApiController {
     @ResponseBody
     public ResponseEntity<List<TbTagBase>> authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
 
+        System.out.println(equipid);
 
         List<TbTagBase> tagInfos = tbService.findTagById(equipid);
 
