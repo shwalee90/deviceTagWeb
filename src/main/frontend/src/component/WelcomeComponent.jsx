@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
+import axios from "axios";
 
 class WelcomeComponent extends Component {
 
@@ -30,9 +31,8 @@ class WelcomeComponent extends Component {
                     Welcome {this.props.match.params.name}.
                 </div>
                 <div className="container">
-                    Check if axiosInterceptors is working well!<br></br>
-                    <button onClick={this.retrieveWelcomeMessage}
-                        className="btn btn-success">Get Message</button>
+                    <button onClick={this.modTestClicked}
+                        className="btn btn-success">modTest</button>
                 </div>
                 <div className="container">
                     {this.state.welcomeMessage}
@@ -48,6 +48,12 @@ class WelcomeComponent extends Component {
             </>
         )
     }
+
+
+
+        modTestClicked() {
+                 axios.get("/modTest" )
+            }
 
 
 

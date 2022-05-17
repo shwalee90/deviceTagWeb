@@ -5,6 +5,7 @@ import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.service.AuthService;
 import com.auxil.pump.service.TbService;
+import com.auxil.pump.service.TestMod;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -37,6 +38,8 @@ public class ApiController {
 
     @Lazy
     private final TbService tbService;
+    @Lazy
+    private final TestMod testMod;
 
 
     @GetMapping("/api")
@@ -113,6 +116,15 @@ public class ApiController {
 
 
         return new ResponseEntity<List<TbTagBase>>(tagInfos , HttpStatus.OK) ;
+
+    }
+
+
+    @GetMapping("/modTest")
+    public void modTest(){
+
+        testMod.quickStart();
+
 
     }
 

@@ -8,6 +8,7 @@ import com.auxil.pump.security.WebAccessDeniedHandler;
 import com.auxil.pump.service.AuthService;
 import com.auxil.pump.service.MemberService;
 import com.auxil.pump.service.SecurityMemberService;
+import com.auxil.pump.service.TestMod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,9 @@ public class SpringConfig {
 
     @Resource
     private AuthService authService;
+
+    @Resource
+    private TestMod testMod;
 
 
     @Bean

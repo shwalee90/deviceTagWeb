@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link , withRouter  } from 'react-router-dom'
 import AuthenticationService from './AuthenticationService.js'
+import Modal from './Modals/Modal';
 import axios from "axios";
 class TagInfoComponent extends Component {
 
@@ -10,6 +11,7 @@ class TagInfoComponent extends Component {
            this.state = {
                     equipid : 0,
                     data :[],
+                    modalOpen :false,
                   }
          }
 
@@ -42,7 +44,12 @@ class TagInfoComponent extends Component {
                 console.log(data_list);
               }
 
-
+            openModal = () => {
+                this.setState({ modalOpen: true })
+            }
+            closeModal = () => {
+                this.setState({ modalOpen: false })
+            }
 
 
     render() {
@@ -53,6 +60,9 @@ class TagInfoComponent extends Component {
         return (
             <>
                 <h1>TAG</h1>
+                    <button onClick={ this.openModal }> 모달팝업</button>
+                    <Modal open={ this.state.modalOpen } close={ this.closeModal } title="insert Tag">
+                                    </Modal>
                 <table>
                     <thead>
                         <tr>
