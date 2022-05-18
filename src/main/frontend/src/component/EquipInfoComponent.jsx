@@ -62,7 +62,7 @@ class EquipInfoComponent extends Component {
                    {list ? list.map( (el) => {
                               return(
                                 <ul  key={el.equip_id}>
-                                  <li> <Link to={`/auth/pump/${el.equip_id}`}> {el.equip_alias} </Link></li>
+                                  <li> <Link to={`/auth/pump/${el.equipid}`}> {el.equip_alias} </Link></li>
                                 </ul>
                               )
                             })

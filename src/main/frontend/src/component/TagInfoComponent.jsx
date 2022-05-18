@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
-import {Link , withRouter  } from 'react-router-dom'
-import AuthenticationService from './AuthenticationService.js'
-import Modal from './Modals/Modal';
+import TagInputModal from './Modals/TagInputModal';
 import axios from "axios";
 class TagInfoComponent extends Component {
 
@@ -12,22 +10,38 @@ class TagInfoComponent extends Component {
                     equipid : 0,
                     data :[],
                     modalOpen :false,
+                    memory_data : [],
                   }
          }
 
 
              componentDidMount() {
-                this._getListData()
+                this._getListData();
+                this._getMemoryList();
+
               }
 
 
              componentDidUpdate(prevProps){
                  if(prevProps.equipid !== this.props.equipid){
                       this._getListData();
-
+                      this._getMemoryList();
                      }
                    }
 
+
+             _getMemoryList = async function() {
+              const memoryList = await axios(`/auth/memoryList/${this.props.equipid}`, {
+                method : 'GET',
+                headers: {
+                           "Content-Type": `application/json`,
+                           "token" : localStorage.getItem('token')
+                                                               }
+              })
+
+                    console.log(memoryList);
+                    this.setState({ memory_data : memoryList })
+              }
 
 
               _getListData = async function() {
@@ -54,15 +68,15 @@ class TagInfoComponent extends Component {
 
     render() {
 
-           let id =  this.props.equipid;
            let list = this.state.data.data;
 
         return (
             <>
                 <h1>TAG</h1>
                     <button onClick={ this.openModal }> 모달팝업</button>
-                    <Modal open={ this.state.modalOpen } close={ this.closeModal } title="insert Tag">
-                                    </Modal>
+                    <TagInputModal open={ this.state.modalOpen } close={ this.closeModal }
+                     memory_data = {this.state.memory_data} id= {this.props.equipid} title="insert Tag">
+                     </TagInputModal>
                 <table>
                     <thead>
                         <tr>

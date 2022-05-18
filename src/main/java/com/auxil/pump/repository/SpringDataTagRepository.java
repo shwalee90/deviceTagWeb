@@ -15,4 +15,5 @@ public interface SpringDataTagRepository extends JpaRepository<TbTagBase, Long> 
             List<TbTagBase> findByEquipid(@Param(value="equipID") long equipID);
 
 
-        }
+
+}

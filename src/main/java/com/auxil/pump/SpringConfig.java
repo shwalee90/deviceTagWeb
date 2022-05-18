@@ -1,6 +1,7 @@
 package com.auxil.pump;
 
 import com.auxil.pump.aop.TimeTraceAop;
+import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.repository.*;
 import com.auxil.pump.security.AuthenticationEntryPointHandler;
 import com.auxil.pump.security.JwtTokenProvider;
@@ -9,6 +10,7 @@ import com.auxil.pump.service.AuthService;
 import com.auxil.pump.service.MemberService;
 import com.auxil.pump.service.SecurityMemberService;
 import com.auxil.pump.service.TestMod;
+import com.auxil.pump.service.validator.EquipTypeFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,10 @@ public class SpringConfig {
 
     @Resource
     private AuthService authService;
+
+    @Resource
+    private EquipTypeFactory equipTypeFactory;
+
 
     @Resource
     private TestMod testMod;

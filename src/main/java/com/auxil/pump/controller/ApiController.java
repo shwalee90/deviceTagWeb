@@ -36,51 +36,9 @@ import java.util.Map;
 @RestController
 public class ApiController {
 
-    @Lazy
-    private final TbService tbService;
+
     @Lazy
     private final TestMod testMod;
-
-
-    @GetMapping("/api")
-    public String oauthKakao(
-            @RequestParam(value = "code", required = false) String code
-            , Model model) {
-
-        BufferedReader br;
-        PrintWriter pw;
-
-
-        System.out.println("#########" + code);
-
-
-        try {
-            // 소켓 생성
-            Socket socket = new Socket();
-            // 주소 생성
-            SocketAddress address = new InetSocketAddress("211.240.38.70", 7007);
-            // 연결
-
-            socket.connect(address);
-
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            pw = new PrintWriter(socket.getOutputStream());
-
-            pw.println(code);
-            pw.flush();
-
-
-            pw.close();
-            br.close();
-            socket.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return "home";
-    }
 
 
 
@@ -93,31 +51,7 @@ public class ApiController {
     }
 
 
-    @GetMapping ("/auth/equip")
-    @ResponseBody
-    public ResponseEntity<List<TbEquipInfo>> authEquip(HttpServletRequest request){
 
-        System.out.println("token2 : " +request.getHeader("token"));
-
-        List<TbEquipInfo> equipInfos = tbService.findEquipAll();
-
-
-        return new ResponseEntity<List<TbEquipInfo>>(equipInfos , HttpStatus.OK) ;
-
-    }
-
-    @GetMapping ("/auth/tagInfo/{equipid}")
-    @ResponseBody
-    public ResponseEntity<List<TbTagBase>> authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
-
-        System.out.println(equipid);
-
-        List<TbTagBase> tagInfos = tbService.findTagById(equipid);
-
-
-        return new ResponseEntity<List<TbTagBase>>(tagInfos , HttpStatus.OK) ;
-
-    }
 
 
     @GetMapping("/modTest")

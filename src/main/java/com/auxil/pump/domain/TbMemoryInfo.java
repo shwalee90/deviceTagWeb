@@ -18,7 +18,7 @@ public class TbMemoryInfo {
     private long id;
 
     @Column(name = "MEMORY_DEVICE_NAME" , nullable = false)
-    private String memory_device_name;
+    private String memoryDeviceName;
 
     @Column(name = "MEMORY_DEVICE_TYPE" , nullable = false)
     private String memory_device_type;
@@ -29,10 +29,12 @@ public class TbMemoryInfo {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "EQUIP_TYPE")
+    private long typeId;
 
-    @ManyToOne
-    @JoinColumn(name = "EQUIP_TYPE")
-    private TbEquipType equip_type;
+//    @ManyToOne
+//    @JoinColumn(name = "EQUIP_TYPE")
+//    private TbEquipType equipType;
 
 
 

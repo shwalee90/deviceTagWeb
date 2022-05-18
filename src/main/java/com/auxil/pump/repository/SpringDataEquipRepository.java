@@ -11,5 +11,5 @@ public interface SpringDataEquipRepository extends JpaRepository<TbEquipInfo, Lo
 
     List<TbEquipInfo> findAll();
 
-
+    TbEquipInfo findByEquipid(long equip_id);
 }

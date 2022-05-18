@@ -12,7 +12,7 @@ public class TbEquipInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "EQUIP_ID")
-    private long equip_id;
+    private long equipid;
 
     @Column(name = "EQUIP_ALIAS" , nullable = false , unique = true)
     private String equip_alias;

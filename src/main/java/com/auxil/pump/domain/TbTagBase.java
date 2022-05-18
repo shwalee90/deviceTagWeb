@@ -3,6 +3,7 @@ package com.auxil.pump.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.*;
 
@@ -45,7 +46,5 @@ public class TbTagBase {
     @Column(name = "DISPLAY_ADDRESS")
     private String displayaddress;
 
-    @Column(name = "UNISEQNO" , nullable = false)
-    private int uniseqno;
 
 }
