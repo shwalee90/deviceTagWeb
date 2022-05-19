@@ -6,10 +6,7 @@ import com.auxil.pump.repository.*;
 import com.auxil.pump.security.AuthenticationEntryPointHandler;
 import com.auxil.pump.security.JwtTokenProvider;
 import com.auxil.pump.security.WebAccessDeniedHandler;
-import com.auxil.pump.service.AuthService;
-import com.auxil.pump.service.MemberService;
-import com.auxil.pump.service.SecurityMemberService;
-import com.auxil.pump.service.TestMod;
+import com.auxil.pump.service.*;
 import com.auxil.pump.service.validator.EquipTypeFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,12 @@ public class SpringConfig {
     @Resource
     private EquipTypeFactory equipTypeFactory;
 
+    @Resource
+    private SpringDataTbMemoryRepository memoryRepository;
+
+
+    @Resource
+    private TbService tbService;
 
     @Resource
     private TestMod testMod;

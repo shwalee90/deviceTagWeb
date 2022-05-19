@@ -2,24 +2,31 @@ package com.auxil.pump.service.validator.equipType;
 
 import com.auxil.pump.domain.TbMemoryInfo;
 import com.auxil.pump.domain.TbTagBase;
+import com.auxil.pump.repository.SpringDataTbMemoryRepository;
 import com.auxil.pump.service.TbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 // 장비별 메모리 타입 , 데이터 타입 , 어드레스 범위 체크
+@Service
 public class ModbusValidate implements IEquipType {
 
+    private final SpringDataTbMemoryRepository memoryRepository;
 
     @Autowired
-    TbService tbService;
-
+    public ModbusValidate(SpringDataTbMemoryRepository springDataTbMemoryRepository) {
+        this.memoryRepository = springDataTbMemoryRepository;
+    }
 
     @Override
     public Map<String, Object> validateMemoryNameAndType(TbTagBase tagBase){
@@ -29,22 +36,63 @@ public class ModbusValidate implements IEquipType {
         boolean valCheck = true;
         String code = "";
 
-
         String memoryName = tagBase.getMemorydevicename();
         int address = tagBase.getAddress();
-        String dataType = tagBase.getDatatype();
+        String dataType = tagBase.getDataType();
 
         long type_id = tagBase.getEquip_id().getEquip_type().getType_id();
 
-        List<TbMemoryInfo> memoryInfos = tbService.findMemoryByTypeId(type_id);
+        System.out.println(type_id);
 
-        List<TbMemoryInfo> tmi = memoryInfos.stream().map(mem -> tbService.findMemoryByTypeIdAndMemoryDeviceName(type_id, mem.getMemoryDeviceName())).collect(Collectors.toList());
+        List<TbMemoryInfo> memoryInfos = memoryRepository.findMemoryByTypeId(type_id);
 
+        List<TbMemoryInfo> tmi = memoryInfos.stream().map(mem -> memoryRepository.findMemoryByTypeIdAndMemoryDeviceName(type_id, mem.getMemoryDeviceName())).collect(Collectors.toList());
+
+        Optional<TbMemoryInfo> matchName = tmi.stream().filter(tInfo -> memoryName.equalsIgnoreCase(tInfo.getMemoryDeviceName()))
+                .findFirst();
+
+        valCheck = matchName.stream().anyMatch(tInfo -> matchDataValue(dataType).equalsIgnoreCase(tInfo.getMemory_device_type()));
+
+        if(!valCheck){
+            if(memoryName.equalsIgnoreCase("C")){
+                code ="메모리 이름과 데이터 타입이 맞지 않습니다.  Boolean을 선택해 주세요.";
+            }else if(memoryName.equalsIgnoreCase("DI")){
+                code ="메모리 이름과 데이터 타입이 맞지 않습니다.  Boolean을 선택해 주세요.";
+            }else if(memoryName.equalsIgnoreCase("R")){
+                code ="메모리 이름과 데이터 타입이 맞지 않습니다.  Short , Word , BCD16 중 하나를 선택해 주세요.";
+            }else if(memoryName.equalsIgnoreCase("IR")){
+                code ="메모리 이름과 데이터 타입이 맞지 않습니다.  Short , Word , BCD16 중 하나를 선택해 주세요.";
+            }
+        }
+        else{
+            code ="OK";
+        }
 
         validateMap.put("code" , code );
         validateMap.put("valCheck" , valCheck);
         return validateMap;
+    }
 
+    private String matchDataValue(String dataType) {
+
+        if(dataType.equalsIgnoreCase("Boolean")){
+            return "BIT";
+        }
+        else if(dataType.equalsIgnoreCase("Short") || dataType.equalsIgnoreCase("Word") ||dataType.equalsIgnoreCase("BCD16")){
+            return "WORD";
+        }
+        if(dataType.equalsIgnoreCase("BYTE") || dataType.equalsIgnoreCase("CHAR")){
+            return "BYTE";
+        }
+        if(dataType.equalsIgnoreCase("Integer")||dataType.equalsIgnoreCase("DWORD")||dataType.equalsIgnoreCase("BCD32")||dataType.equalsIgnoreCase("FLOAT")){
+            return "DWORD";
+        }
+        if(dataType.equalsIgnoreCase("Boolean")){
+            return "BIT";
+        }
+
+
+        return null;
 
     }
 
@@ -58,10 +106,10 @@ public class ModbusValidate implements IEquipType {
 
         String memoryName = tagBase.getMemorydevicename();
         int address = tagBase.getAddress();
-        String dataType = tagBase.getDatatype();
+        String dataType = tagBase.getDataType();
 
         if(address > 10000 || address < 1){
-            code = "memory 영역과 주소 범위가 맞지 않습니다. 0< ADDRESS < 10000";
+            code = "memory 영역과 주소 범위가 맞지 않습니다. 0 < ADDRESS < 10000";
             valCheck = false;
         }
 
@@ -70,9 +118,6 @@ public class ModbusValidate implements IEquipType {
         validateMap.put("valCheck" , valCheck);
         return validateMap;
 
-
     }
-
-
 
 }

@@ -3,7 +3,6 @@ package com.auxil.pump.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.*;
 
@@ -18,7 +17,7 @@ public class TbTagBase {
     @Column(name = "ID")
     private long tag_id;
 
-    @Column(name= "TAGNAME")
+    @Column(name= "TAGNAME" , nullable = false)
     private String tagname;
 
     @Column(name = "DESCRIPTION")
@@ -38,7 +37,7 @@ public class TbTagBase {
     private int address;
 
     @Column(name = "DATA_TYPE" , nullable = false)
-    private String datatype;
+    private String dataType;
 
     @Column(name = "TAG_ACCESS" , nullable = false)
     private String tagaccess;
@@ -46,5 +45,13 @@ public class TbTagBase {
     @Column(name = "DISPLAY_ADDRESS")
     private String displayaddress;
 
+
+    public String getTagname() {
+        return this.tagname;
+    }
+
+    public void setTagname(String tagname){
+        this.tagname = tagname;
+    }
 
 }

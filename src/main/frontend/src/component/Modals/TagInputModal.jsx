@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import '../../css/Modal.css';
 import axios from "axios";
+import uuid from "react-uuid";
 
 class TagInputModal extends Component {
 
@@ -12,10 +13,10 @@ class TagInputModal extends Component {
                 tagName: '',
                 address: '' ,
                 description: '',
-                dataType : '' ,
-                access : '' ,
+                dataType : 'Boolean' ,
+                access : 'READ' ,
                 rstMsg : '' ,
-                memoryName : '',
+                memoryName : 'C',
                 memory_data : [],
             }
 
@@ -65,7 +66,6 @@ class TagInputModal extends Component {
 
           let memoryList = this.props.memory_data.data;
           let rstMsg = this.state.rstMsg;
-          console.log(memoryList);
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
               {open ? (
@@ -77,16 +77,16 @@ class TagInputModal extends Component {
                      <div className="modalForm">
                         <li> TAG Name: <input type="text" name = "tagName" value={this.state.tagName} onChange={this.handleChange}/></li>
                         <li> MEMORY TYPE :
-                                                                        <select name="memoryName"  onChange={this.handleChange}>
+                                                                        <select key={uuid()} name="memoryName" defaultValue={memoryList[0].memoryDeviceName} onChange={this.handleChange}>
                                                                         {memoryList ? memoryList.map((el) => {
-                                                                          return ( <option value={el.memory_device_name}>{el.memory_device_name}</option> )
+                                                                          return ( <option key={el.id} value={el.memoryDeviceName}>{el.memoryDeviceName}</option> )
                                                                          })
                                                                          : null }
                                                                         </select> </li>
 
                         <li> ADDRESS: <input type="text" name="address" value={this.state.address}  onChange={this.handleChange}/></li>
                         <li> DESCRIPTION: <input type="text" name = "description" value={this.state.description} onChange={this.handleChange}/></li>
-                        <li> DATA TYPE: <select name = "dataType" onChange={this.handleChange}>
+                        <li> DATA TYPE: <select name = "dataType"  key={uuid()}  defaultValue="Boolean" onChange={this.handleChange}>
                                             <option value="Boolean">Boolean</option>
                                             <option value="Short">Short</option>
                                             <option value="Word">Word</option>
@@ -98,7 +98,7 @@ class TagInputModal extends Component {
                                             <option value="Double">Double</option>
                                             <option value="String">String</option>
                                         </select>            </li>
-                        <li> ACCESS :  <select name="access"  onChange={this.handleChange}>
+                        <li> ACCESS :  <select name="access" key={uuid()}  defaultValue="READ"  onChange={this.handleChange}>
                                             <option value="READ">READ</option>
                                             <option value="READ/WRITE">READ/WRITE</option>
                                         </select></li>

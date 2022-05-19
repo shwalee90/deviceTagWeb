@@ -25,7 +25,8 @@ public class TagBaseController {
     private final TbService tbService;
     @Lazy
     private final TestMod testMod;
-
+    @Lazy
+    private final TagValidator tagValidator;
 
 
     @GetMapping ("/auth/equip")
@@ -74,39 +75,38 @@ public class TagBaseController {
 
     @PostMapping("/auth/insertTag")
     public Object insertTag(@RequestBody HashMap<String, String> map , BindingResult bindingResult ){
-        String rstMsg ="";
 
         TbTagBase tbTagBase = new TbTagBase();
 
         TbEquipInfo tbEquipInfo = new TbEquipInfo();
-        tbEquipInfo.setEquipid(Long.parseLong(map.get("id")));
+        tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
 
         tbTagBase.setTagname(map.get("tagName"));
         tbTagBase.setDescription(map.get("description"));
         tbTagBase.setEquip_id(tbEquipInfo);
         tbTagBase.setMemorydevicename(map.get("memoryName"));
         tbTagBase.setBlockno(0);
-        tbTagBase.setAddress(Integer.parseInt(map.get("address")));
-        tbTagBase.setDatatype(map.get("dataType"));
+        try{
+            tbTagBase.setAddress(Integer.parseInt(map.get("address")));
+        }catch (NumberFormatException ne){
+        }
+        tbTagBase.setDataType(map.get("dataType"));
         tbTagBase.setTagaccess(map.get("access"));
 
         String displayAddr = map.get("memoryName")+map.get("address");
         tbTagBase.setDisplayaddress(displayAddr);
+        System.out.println("####################"+tbTagBase);
 
-
-        TagValidator tagValidator = new TagValidator();
         tagValidator.validate(tbTagBase , bindingResult);
-
+        System.out.println(tbTagBase);
         if(bindingResult.hasErrors()){
             return bindingResult.getAllErrors();
+        }else{
+            tbService.insertTag(tbTagBase);
+            String rstMsg ="INSERT Success";
+            return rstMsg;
         }
 
-
-        tbService.insertTag(tbTagBase);
-
-
-        return rstMsg;
     }
-
 
 }
