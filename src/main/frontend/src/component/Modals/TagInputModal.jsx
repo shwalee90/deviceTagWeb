@@ -15,9 +15,9 @@ class TagInputModal extends Component {
                 description: '',
                 dataType : 'Boolean' ,
                 access : 'READ' ,
-                rstMsg : '' ,
                 memoryName : 'C',
                 memory_data : [],
+                rst_msg :[],
             }
 
             this.handleChange = this.handleChange.bind(this)
@@ -38,6 +38,7 @@ class TagInputModal extends Component {
              )
          }
 
+
          addTagClicked() {
                  let data = {
                              tagName : this.state.tagName,
@@ -55,8 +56,16 @@ class TagInputModal extends Component {
                                        "token" : localStorage.getItem('token'),
                                        }})
                      .then(response => {
-                                 this.setState({rstMsg : response})
+                                 console.log(response)
+                                  this.setState({ rst_msg : response.data.result })
                              })
+                     .catch(function(error){
+                        if(error.response){
+                            console.log(error.response);
+                              this.setState({ rst_msg : error.response.data.result })
+                        }
+
+                     });
 
          }
 
@@ -65,7 +74,12 @@ class TagInputModal extends Component {
           const { open, close, header } = this.props;
 
           let memoryList = this.props.memory_data.data;
-          let rstMsg = this.state.rstMsg;
+
+          let rst_msg = this.state.rst_msg;
+
+           console.log("list 비교");
+          console.log(rst_msg);
+          console.log(memoryList);
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
               {open ? (
@@ -77,40 +91,41 @@ class TagInputModal extends Component {
                      <div className="modalForm">
                         <li> TAG Name: <input type="text" name = "tagName" value={this.state.tagName} onChange={this.handleChange}/></li>
                         <li> MEMORY TYPE :
-                                                                        <select key={uuid()} name="memoryName" defaultValue={memoryList[0].memoryDeviceName} onChange={this.handleChange}>
-                                                                        {memoryList ? memoryList.map((el) => {
-                                                                          return ( <option key={el.id} value={el.memoryDeviceName}>{el.memoryDeviceName}</option> )
-                                                                         })
-                                                                         : null }
-                                                                        </select> </li>
+                                          <select key={uuid()} name="memoryName" value={this.state.memoryName} onChange={this.handleChange}>
+                                          {memoryList ? memoryList.map((el) => {
+                                            return ( <option value={el.memoryDeviceName} >{el.memoryDeviceName}</option> )
+                                           })
+                                           : null }
+                                          </select> </li>
 
                         <li> ADDRESS: <input type="text" name="address" value={this.state.address}  onChange={this.handleChange}/></li>
                         <li> DESCRIPTION: <input type="text" name = "description" value={this.state.description} onChange={this.handleChange}/></li>
-                        <li> DATA TYPE: <select name = "dataType"  key={uuid()}  defaultValue="Boolean" onChange={this.handleChange}>
-                                            <option value="Boolean">Boolean</option>
-                                            <option value="Short">Short</option>
-                                            <option value="Word">Word</option>
-                                            <option value="BCD16">BCD16</option>
-                                            <option value="Integer">Integer</option>
-                                            <option value="DWord">DWord</option>
-                                            <option value="BCD32">BCD32</option>
-                                            <option value="Float">Float</option>
-                                            <option value="Double">Double</option>
+                        <li> DATA TYPE: <select name = "dataType"  key={uuid()}  value={this.state.dataType} onChange={this.handleChange}>
+                                            <option value="Boolean" >Boolean</option>
+                                            <option value="Short" >Short</option>
+                                            <option value="Word" >Word</option>
+                                            <option value="BCD16" >BCD16</option>
+                                            <option value="Integer" >Integer</option>
+                                            <option value="DWord" >DWord</option>
+                                            <option value="BCD32" >BCD32</option>
+                                            <option value="Float" >Float</option>
+                                            <option value="Double" >Double</option>
                                             <option value="String">String</option>
                                         </select>            </li>
-                        <li> ACCESS :  <select name="access" key={uuid()}  defaultValue="READ"  onChange={this.handleChange}>
+                        <li> ACCESS :  <select name="access" key={uuid()}  value={this.state.access}  onChange={this.handleChange}>
                                             <option value="READ">READ</option>
                                             <option value="READ/WRITE">READ/WRITE</option>
                                         </select></li>
-                         <button className="btn btn-success" onClick={this.addTagClicked}>Add</button>
+                         <button className="btn btn-success" onClick={this.addTagClicked}>ADD</button>
+
+                         {rst_msg ? rst_msg.map((el) => {
+                          return (<li class="rstMsg" key={uuid()}>에러필드 : {el.field} 에러코드 :{el.code}</li>) })  : null}
+
                      </div>
-                        {
-                            rstMsg ?(
-                                <div>
-                                   {rstMsg}
-                                </div>
-                            ) : null
-                        }
+
+
+
+
                   </main>
 
                   <footer>
@@ -124,5 +139,8 @@ class TagInputModal extends Component {
           );
         }
 }
+
+
+
 
 export default TagInputModal

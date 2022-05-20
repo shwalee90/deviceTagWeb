@@ -1,11 +1,13 @@
 package com.auxil.pump.controller;
 
+import com.auxil.pump.domain.ApiResponse;
 import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbMemoryInfo;
 import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.service.TbService;
 import com.auxil.pump.service.TestMod;
 import com.auxil.pump.service.validator.TagValidator;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,37 +77,43 @@ public class TagBaseController {
 
 
     @PostMapping("/auth/insertTag")
-    public Object insertTag(@RequestBody HashMap<String, String> map , BindingResult bindingResult ){
+    public ResponseEntity insertTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult ){
 
-        TbTagBase tbTagBase = new TbTagBase();
+        System.out.println(map);
 
-        TbEquipInfo tbEquipInfo = new TbEquipInfo();
-        tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
 
-        tbTagBase.setTagname(map.get("tagName"));
-        tbTagBase.setDescription(map.get("description"));
-        tbTagBase.setEquip_id(tbEquipInfo);
-        tbTagBase.setMemorydevicename(map.get("memoryName"));
-        tbTagBase.setBlockno(0);
+        tagBase = new TbTagBase();
+
+        TbEquipInfo  tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
+
+        tagBase.setTagname(map.get("tagName"));
+        tagBase.setDescription(map.get("description"));
+        tagBase.setEquip_id(tbEquipInfo);
+        tagBase.setMemorydevicename(map.get("memoryName"));
+        tagBase.setBlockno(0);
         try{
-            tbTagBase.setAddress(Integer.parseInt(map.get("address")));
+            tagBase.setAddress(Integer.parseInt(map.get("address")));
         }catch (NumberFormatException ne){
+            bindingResult.rejectValue("address", "address 에 숫자를 써주세요.");
         }
-        tbTagBase.setDataType(map.get("dataType"));
-        tbTagBase.setTagaccess(map.get("access"));
+        tagBase.setDataType(map.get("dataType"));
+        tagBase.setTagaccess(map.get("access"));
 
         String displayAddr = map.get("memoryName")+map.get("address");
-        tbTagBase.setDisplayaddress(displayAddr);
-        System.out.println("####################"+tbTagBase);
-
-        tagValidator.validate(tbTagBase , bindingResult);
-        System.out.println(tbTagBase);
+        tagBase.setDisplayaddress(displayAddr);
+        tagValidator.validate(tagBase , bindingResult);
         if(bindingResult.hasErrors()){
-            return bindingResult.getAllErrors();
+            ApiResponse response = new ApiResponse();
+            response.setResult(bindingResult.getAllErrors());
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
         }else{
-            tbService.insertTag(tbTagBase);
-            String rstMsg ="INSERT Success";
-            return rstMsg;
+            tbService.insertTag(tagBase);
+            ApiResponse response = new ApiResponse();
+            String rstMsg ="INSERT SUCCESS";
+            HashMap<String,String> rstMap = new HashMap<>();
+            rstMap.put("result", rstMsg);
+            response.setResult(rstMap);
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
         }
 
     }
