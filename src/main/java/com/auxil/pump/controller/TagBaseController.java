@@ -4,6 +4,7 @@ import com.auxil.pump.domain.ApiResponse;
 import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbMemoryInfo;
 import com.auxil.pump.domain.TbTagBase;
+import com.auxil.pump.dto.RealTimeModbusConnDTO;
 import com.auxil.pump.service.TbService;
 import com.auxil.pump.service.TestMod;
 import com.auxil.pump.service.validator.TagValidator;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -73,6 +76,31 @@ public class TagBaseController {
     //    return new ResponseEntity<List<String>>(equipInfos , HttpStatus.OK) ;
         return  new ResponseEntity<List<TbMemoryInfo>>(memoryInfos , HttpStatus.OK) ;
     }
+
+
+
+    @PostMapping("/auth/realTimeTagValue/{equipid}")
+    @ResponseBody
+    public ResponseEntity realTimeValue(@PathVariable("equipid") long equipid, @RequestBody Map<String, Object>[] params ){
+
+        System.out.println(params);
+
+
+        TbEquipInfo equipInfo = tbService.findEquipById(equipid);
+
+
+        Arrays.stream(params).map(em -> em.get("address"));
+
+
+
+
+
+
+
+
+        return null;
+    }
+
 
 
 

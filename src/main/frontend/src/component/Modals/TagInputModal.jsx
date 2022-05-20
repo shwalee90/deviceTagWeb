@@ -77,9 +77,7 @@ class TagInputModal extends Component {
 
           let rst_msg = this.state.rst_msg;
 
-           console.log("list 비교");
-          console.log(rst_msg);
-          console.log(memoryList);
+
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
               {open ? (

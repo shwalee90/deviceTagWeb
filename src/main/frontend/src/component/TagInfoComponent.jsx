@@ -3,6 +3,7 @@ import TagInputModal from './Modals/TagInputModal';
 import axios from "axios";
 class TagInfoComponent extends Component {
 
+
         constructor(props) {
 
            super(props)
@@ -11,6 +12,8 @@ class TagInfoComponent extends Component {
                     data :[],
                     modalOpen :false,
                     memory_data : [],
+                    currentTime : '',
+                    realTimeVal : '',
                   }
          }
 
@@ -27,7 +30,48 @@ class TagInfoComponent extends Component {
                       this._getListData();
                       this._getMemoryList();
                      }
+
+                     this.launchInterval();
+
                    }
+
+
+
+             launchInterval() {
+                 this.interval = setInterval(() => {
+
+                      console.log("check data");
+                      console.log(this.state.data.data);
+
+                     this._getRtValue();
+                     this.setState({
+                     currentTime: new Date().toLocaleString()
+                   });
+                 }, 10000);
+               }
+
+
+             componentWillUnmount(){
+                    console.log("###################################unmount")
+                    clearInterval(this.interval);
+                }
+
+
+
+             _getRtValue() {
+                                axios.post(`/auth/realTimeTagValue/${this.props.equipid}`
+                                , JSON.stringify(this.state.data.data),{
+                                 headers: {
+                                                   "Content-Type": `application/json`,
+                                                   "token" : localStorage.getItem('token'),
+                                                   }})
+                                 .then(response => {
+                                               console.log(response);
+                                               this.setState({ realTimeVal : response })
+                                         })
+
+
+                     }
 
 
              _getMemoryList = async function() {
@@ -69,6 +113,7 @@ class TagInfoComponent extends Component {
     render() {
 
            let list = this.state.data.data;
+           let realTimeVal = this.state.realTimeVal;
 
         return (
             <>
@@ -85,6 +130,7 @@ class TagInfoComponent extends Component {
                             <th>DATA TYPE</th>
                             <th>I/O TYPE</th>
                             <th>DISPLAYADDRESS</th>
+                            <th>VALUE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +142,8 @@ class TagInfoComponent extends Component {
                                                           <td> {el.datatype} </td>
                                                           <td> {el.tagaccess} </td>
                                                           <td> {el.displayaddress} </td>
+                                                          { realTimeVal ?  (<td> {this.state.realTimeVal} </td>)
+                                                          : (<td> 0 </td>)  }
                                                         </tr>
                                                       )
                                                     })

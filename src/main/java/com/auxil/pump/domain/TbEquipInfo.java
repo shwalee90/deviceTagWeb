@@ -21,6 +21,11 @@ public class TbEquipInfo {
     @JoinColumn(name = "TYPE_ID")
     private TbEquipType equip_type;
 
+    @Column (name = "IP" , nullable = false )
+    private String ip;
+
+    @Column (name = "PORT" , nullable = false )
+    private int port;
 
 
 
