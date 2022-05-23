@@ -14,6 +14,7 @@ class TagInfoComponent extends Component {
                     memory_data : [],
                     currentTime : '',
                     realTimeVal : '',
+                    rstMsg : '',
                   }
          }
 
@@ -22,6 +23,9 @@ class TagInfoComponent extends Component {
                 this._getListData();
                 this._getMemoryList();
 
+                this.launchInterval();
+
+
               }
 
 
@@ -29,9 +33,8 @@ class TagInfoComponent extends Component {
                  if(prevProps.equipid !== this.props.equipid){
                       this._getListData();
                       this._getMemoryList();
-                     }
 
-                     this.launchInterval();
+                     }
 
                    }
 
@@ -69,6 +72,8 @@ class TagInfoComponent extends Component {
                                                console.log(response);
                                                this.setState({ realTimeVal : response })
                                          })
+                                 .catch(response =>{
+                                 })
 
 
                      }
@@ -113,7 +118,7 @@ class TagInfoComponent extends Component {
     render() {
 
            let list = this.state.data.data;
-           let realTimeVal = this.state.realTimeVal;
+           let realTimeVal = this.state.realTimeVal.data;
 
         return (
             <>
@@ -122,6 +127,7 @@ class TagInfoComponent extends Component {
                     <TagInputModal open={ this.state.modalOpen } close={ this.closeModal }
                      memory_data = {this.state.memory_data} id= {this.props.equipid} title="insert Tag">
                      </TagInputModal>
+
                 <table>
                     <thead>
                         <tr>
@@ -134,7 +140,7 @@ class TagInfoComponent extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {list ? list.map( (el) => {
+                        { list  ? list.map( (el) => {
                                                       return(
                                                         <tr  key={el.tagname}>
                                                           <td> {el.tagname} </td>
@@ -147,7 +153,7 @@ class TagInfoComponent extends Component {
                                                         </tr>
                                                       )
                                                     })
-                                                      : null}
+                                                      : <li> {this.props.equipid} 장비에 테그가 없습니다.</li>}
                     </tbody>
                 </table>
             </>

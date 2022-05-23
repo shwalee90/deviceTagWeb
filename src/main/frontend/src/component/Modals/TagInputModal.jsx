@@ -18,6 +18,7 @@ class TagInputModal extends Component {
                 memoryName : 'C',
                 memory_data : [],
                 rst_msg :[],
+                errCheck : '',
             }
 
             this.handleChange = this.handleChange.bind(this)
@@ -57,7 +58,9 @@ class TagInputModal extends Component {
                                        }})
                      .then(response => {
                                  console.log(response)
-                                  this.setState({ rst_msg : response.data.result })
+                                  this.setState({ rst_msg : response.data.result ,
+                                                  errCheck : response.data.result[0].code ,
+                                   })
                              })
                      .catch(function(error){
                         if(error.response){
@@ -77,6 +80,7 @@ class TagInputModal extends Component {
 
           let rst_msg = this.state.rst_msg;
 
+           console.log("@@@@@@@@@@@@"+this.state.errCheck);
 
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
@@ -116,8 +120,11 @@ class TagInputModal extends Component {
                                         </select></li>
                          <button className="btn btn-success" onClick={this.addTagClicked}>ADD</button>
 
-                         {rst_msg ? rst_msg.map((el) => {
-                          return (<li class="rstMsg" key={uuid()}>에러필드 : {el.field} 에러코드 :{el.code}</li>) })  : null}
+                         {this.state.errCheck == "INSERT SUCCESS" ?
+                          rst_msg.map((el) => {
+                          return (<li class="rstMsg_success">{el.code}</li>) }) :
+                          rst_msg.map((el) => {
+                          return (<li class="rstMsg" key={uuid()}>에러필드 : {el.field} 에러코드 :{el.code}</li>) }) }
 
                      </div>
 

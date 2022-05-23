@@ -24,7 +24,7 @@ public class TestMod {
 
         System.out.println("start");
 
-        ModbusTcpMasterConfig config = new ModbusTcpMasterConfig.Builder("localhost").setPort(502).build();
+        ModbusTcpMasterConfig config = new ModbusTcpMasterConfig.Builder("211.240.38.70").setPort(502).build();
         ModbusTcpMaster master = new ModbusTcpMaster(config);
 
 
@@ -32,8 +32,9 @@ public class TestMod {
         master.connect();
 
         CompletableFuture<ReadHoldingRegistersResponse> futureHR =
-                master.sendRequest(new ReadHoldingRegistersRequest(0, 1), 0);
+                master.sendRequest(new ReadHoldingRegistersRequest(0, 10), 1);
 
+        System.out.println("connected");
         futureHR.thenAccept(response -> {
             System.out.println("Response holding register: " + ByteBufUtil.hexDump(response.getRegisters()));
 
@@ -42,7 +43,7 @@ public class TestMod {
 
 
         CompletableFuture<ReadCoilsResponse> futureCoils =
-                master.sendRequest(new ReadCoilsRequest(0, 1), 0);
+                master.sendRequest(new ReadCoilsRequest(0, 10), 0);
 
         futureCoils.thenAccept(response -> {
             System.out.println("Response coils: " + ByteBufUtil.hexDump(response.getCoilStatus()));
@@ -50,7 +51,7 @@ public class TestMod {
             System.out.println(ReferenceCountUtil.release(response));
         });
         CompletableFuture<ReadDiscreteInputsResponse> futureDi =
-                master.sendRequest(new ReadDiscreteInputsRequest(0, 1), 0);
+                master.sendRequest(new ReadDiscreteInputsRequest(0, 10), 0);
 
         futureDi.thenAccept(response -> {
             System.out.println("Response DISCRETE : " + ByteBufUtil.hexDump(response.getInputStatus()));
@@ -58,7 +59,7 @@ public class TestMod {
             System.out.println(ReferenceCountUtil.release(response));
         });
         CompletableFuture<ReadInputRegistersResponse> futureIR =
-                master.sendRequest(new ReadInputRegistersRequest(0, 1), 0);
+                master.sendRequest(new ReadInputRegistersRequest(0, 10), 0);
 
         futureIR.thenAccept(response -> {
             System.out.println("Response INPUT REGISTER: " + ByteBufUtil.hexDump(response.getRegisters()));

@@ -5,6 +5,7 @@ import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbMemoryInfo;
 import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.dto.RealTimeModbusConnDTO;
+import com.auxil.pump.service.RealTimeService;
 import com.auxil.pump.service.TbService;
 import com.auxil.pump.service.TestMod;
 import com.auxil.pump.service.validator.TagValidator;
@@ -18,10 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,10 +30,11 @@ public class TagBaseController {
     @Lazy
     private final TbService tbService;
     @Lazy
-    private final TestMod testMod;
+    private final RealTimeService realTimeService;
     @Lazy
     private final TagValidator tagValidator;
-
+    @Lazy
+    private final TestMod testMod;
 
     @GetMapping ("/auth/equip")
     @ResponseBody
@@ -49,11 +50,11 @@ public class TagBaseController {
 
     @GetMapping ("/auth/tagInfo/{equipid}")
     @ResponseBody
-    public ResponseEntity<List<TbTagBase>> authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
-
-        System.out.println(equipid);
+    public ResponseEntity authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
 
         List<TbTagBase> tagInfos = tbService.findTagById(equipid);
+
+
 
 
         return new ResponseEntity<List<TbTagBase>>(tagInfos , HttpStatus.OK) ;
@@ -83,17 +84,25 @@ public class TagBaseController {
     @ResponseBody
     public ResponseEntity realTimeValue(@PathVariable("equipid") long equipid, @RequestBody Map<String, Object>[] params ){
 
-        System.out.println(params);
-
-
         TbEquipInfo equipInfo = tbService.findEquipById(equipid);
 
+        List<RealTimeModbusConnDTO> tagList = new ArrayList<>();
 
-        Arrays.stream(params).map(em -> em.get("address"));
+        for (int i = 0 ; i < params.length ; i++ ){
+
+            tagList.add(new RealTimeModbusConnDTO((String)params[i].get("memorydevicename"),(int)params[i].get("address")));
+        }
 
 
 
 
+        List<RealTimeModbusConnDTO> connList = new ArrayList( Arrays.stream(params).map(em -> Stream.of(new RealTimeModbusConnDTO((String)em.get("memorydevicename"),(int)em.get("address")))).collect(Collectors.toList()));
+
+
+
+        if(equipInfo != null){
+            realTimeService.readModValue(equipInfo , tagList);
+        }
 
 
 
@@ -137,10 +146,17 @@ public class TagBaseController {
         }else{
             tbService.insertTag(tagBase);
             ApiResponse response = new ApiResponse();
+
+            HashMap<String,String>[] hmArr = new HashMap[1];
+
+
+
             String rstMsg ="INSERT SUCCESS";
             HashMap<String,String> rstMap = new HashMap<>();
-            rstMap.put("result", rstMsg);
-            response.setResult(rstMap);
+            rstMap.put("code", rstMsg);
+            hmArr[0] = rstMap;
+
+            response.setResult(hmArr);
             return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
         }
 
