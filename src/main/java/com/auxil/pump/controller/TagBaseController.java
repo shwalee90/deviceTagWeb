@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,36 +92,51 @@ public class TagBaseController {
 
         List<RealTimeModbusConnDTO> tagList = new ArrayList<>();
 
+
         for (int i = 0 ; i < params.length ; i++ ){
 
             tagList.add(new RealTimeModbusConnDTO((String)params[i].get("memorydevicename"),(int)params[i].get("address")));
         }
 
-
-
-
-        List<RealTimeModbusConnDTO> connList = new ArrayList( Arrays.stream(params).map(em -> Stream.of(new RealTimeModbusConnDTO((String)em.get("memorydevicename"),(int)em.get("address")))).collect(Collectors.toList()));
-
-
-
         if(equipInfo != null){
-            realTimeService.readModValue(equipInfo , tagList);
+          Map <String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , tagList);
+
+
+
+
+          Set<String> kSet = addrValMap.keySet();
+
+          
+//            for (int i = 0 ;  i < params.length ; i++){
+//              for(String key :  kSet){
+//                if(params[i].get("displayaddress").equals(key)){
+//                    params[i].put("rtValue", addrValMap.get(key));
+//                }
+//              }
+//          }
+
+            LocalTime now = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            // for each 기존의 객체 이용 , map 새로운 객체 생성
+            Arrays.stream(params).filter(fa -> kSet.stream().anyMatch(Predicate.isEqual(fa.get("displayaddress"))))
+                    .forEach(fe -> fe.put("rtValue",addrValMap.get(fe.get("displayaddress"))) );
+
+            Arrays.stream(params).forEach(fe -> fe.put("time" , now.format(formatter)));
+
+            for (int i = 0 ;  i < params.length ; i++){
+                System.out.println(params[i]);
+            }
         }
 
-
-
-
-        return null;
+        return new ResponseEntity(params, HttpStatus.valueOf(HttpStatus.OK.value()));
     }
-
-
 
 
     @PostMapping("/auth/insertTag")
     public ResponseEntity insertTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult ){
 
         System.out.println(map);
-
 
         tagBase = new TbTagBase();
 

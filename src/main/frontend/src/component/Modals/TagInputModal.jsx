@@ -80,8 +80,6 @@ class TagInputModal extends Component {
 
           let rst_msg = this.state.rst_msg;
 
-           console.log("@@@@@@@@@@@@"+this.state.errCheck);
-
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
               {open ? (
@@ -120,7 +118,7 @@ class TagInputModal extends Component {
                                         </select></li>
                          <button className="btn btn-success" onClick={this.addTagClicked}>ADD</button>
 
-                         {this.state.errCheck == "INSERT SUCCESS" ?
+                         {this.state.errCheck === "INSERT SUCCESS" ?
                           rst_msg.map((el) => {
                           return (<li class="rstMsg_success">{el.code}</li>) }) :
                           rst_msg.map((el) => {

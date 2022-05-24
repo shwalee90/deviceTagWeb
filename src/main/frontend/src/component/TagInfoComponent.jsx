@@ -13,7 +13,7 @@ class TagInfoComponent extends Component {
                     modalOpen :false,
                     memory_data : [],
                     currentTime : '',
-                    realTimeVal : '',
+                    realTimeVal : [],
                     rstMsg : '',
                   }
          }
@@ -70,7 +70,7 @@ class TagInfoComponent extends Component {
                                                    }})
                                  .then(response => {
                                                console.log(response);
-                                               this.setState({ realTimeVal : response })
+                                               this.setState({ data : response })
                                          })
                                  .catch(response =>{
                                  })
@@ -115,10 +115,15 @@ class TagInfoComponent extends Component {
             }
 
 
+
+
+
     render() {
 
            let list = this.state.data.data;
-           let realTimeVal = this.state.realTimeVal.data;
+          // let realTimeVal = this.state.realTimeVal.data;
+
+
 
         return (
             <>
@@ -137,6 +142,7 @@ class TagInfoComponent extends Component {
                             <th>I/O TYPE</th>
                             <th>DISPLAYADDRESS</th>
                             <th>VALUE</th>
+                            <th>LOAD TIME</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,8 +154,8 @@ class TagInfoComponent extends Component {
                                                           <td> {el.datatype} </td>
                                                           <td> {el.tagaccess} </td>
                                                           <td> {el.displayaddress} </td>
-                                                          { realTimeVal ?  (<td> {this.state.realTimeVal} </td>)
-                                                          : (<td> 0 </td>)  }
+                                                          <td> {el.rtValue ? el.rtValue : 0}</td>
+                                                          <td> {el.time ? el.time : null} </td>
                                                         </tr>
                                                       )
                                                     })

@@ -24,6 +24,9 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class RealTimeService {
 
+    Map<String,Integer> realTimeValueMap = new HashMap<>();
+
+
 
     public void quickStart(){
 
@@ -71,9 +74,7 @@ public class RealTimeService {
 
     }
 
-
     public Map<String,Integer> readModValue(TbEquipInfo equipInfo ,List<RealTimeModbusConnDTO> connList){
-        Map<String,Integer> realTimeValueMap = new HashMap<>();
 
 
         ModbusTcpMasterConfig config = new ModbusTcpMasterConfig.Builder(equipInfo.getIp()).setPort(equipInfo.getPort()).build();
@@ -89,69 +90,50 @@ public class RealTimeService {
             String memoryName = tagList.getMemoryName();
 
 
-
-
             if ("C".equalsIgnoreCase(memoryName)) {
 
                 CompletableFuture<ReadCoilsResponse> futureCoils =
                         master.sendRequest(new ReadCoilsRequest(tagList.getAddress(), 1), 0);
 
-
-
                 futureCoils.thenAccept(response -> {
-                    System.out.println("Response Coil: " + ByteBufUtil.hexDump(response.getCoilStatus()));
-
-                    System.out.println(ReferenceCountUtil.release(response));
+                    int decVal = Integer.parseInt(ByteBufUtil.hexDump(response.getCoilStatus()) ,16);
+                    realTimeValueMap.put(memoryName+tagList.getAddress() , decVal);
                 });
-
 
             } else if ("DI".equalsIgnoreCase(memoryName)) {
                 CompletableFuture<ReadDiscreteInputsResponse> futureDi =
-                        master.sendRequest(new ReadCoilsRequest(tagList.getAddress(), 1), 0);
-
+                        master.sendRequest(new ReadDiscreteInputsRequest(tagList.getAddress(), 1), 0);
                 futureDi.thenAccept(response -> {
-                    System.out.println("Response DISCRETE : " + ByteBufUtil.hexDump(response.getInputStatus()));
 
-                    System.out.println(ReferenceCountUtil.release(response));
+                    int decVal = Integer.parseInt(ByteBufUtil.hexDump(response.getInputStatus()) , 16);
+                    realTimeValueMap.put(memoryName+tagList.getAddress() , decVal);
                 });
 
             } else if ("R".equalsIgnoreCase(memoryName)) {
                 CompletableFuture<ReadHoldingRegistersResponse> futureHR =
-                        master.sendRequest(new ReadCoilsRequest(tagList.getAddress(), 1), 0);
+                        master.sendRequest(new ReadHoldingRegistersRequest(tagList.getAddress(), 1), 0);
                 futureHR.thenAccept(response -> {
-                    System.out.println("Response holding register: " + ByteBufUtil.hexDump(response.getRegisters()));
-
-                    System.out.println(ReferenceCountUtil.release(response));
+                    int decVal = Integer.parseInt(ByteBufUtil.hexDump(response.getRegisters()) , 16);
+                    realTimeValueMap.put(memoryName+tagList.getAddress() , decVal);
                 });
 
             } else if ("IR".equalsIgnoreCase(memoryName)) {
                 CompletableFuture<ReadInputRegistersResponse> futureIR =
-                        master.sendRequest(new ReadCoilsRequest(tagList.getAddress(), 1), 0);
-
+                        master.sendRequest(new ReadInputRegistersRequest(tagList.getAddress(), 1), 0);
 
                 futureIR.thenAccept(response -> {
-                    System.out.println("Response INPUT REGISTER: " + ByteBufUtil.hexDump(response.getRegisters()));
-
-                    System.out.println(ReferenceCountUtil.release(response));
+                    int decVal = Integer.parseInt(ByteBufUtil.hexDump(response.getRegisters()) , 16);
+                    realTimeValueMap.put(memoryName+tagList.getAddress() , decVal);
                 });
-
             }
-
         }
-
 
         }catch (Exception e){
             master.disconnect();
         }
 
-
-
-
-
         return realTimeValueMap;
     }
-
-
 
 
 }
