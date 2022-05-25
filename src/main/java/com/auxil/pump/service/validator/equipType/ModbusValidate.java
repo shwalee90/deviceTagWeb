@@ -40,7 +40,7 @@ public class ModbusValidate implements IEquipType {
         int address = tagBase.getAddress();
         String dataType = tagBase.getDataType();
 
-        long type_id = tagBase.getEquip_id().getEquip_type().getType_id();
+        long type_id = tagBase.getEquipid().getEquip_type().getType_id();
 
         System.out.println(type_id);
 

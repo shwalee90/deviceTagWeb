@@ -12,6 +12,8 @@ import com.auxil.pump.service.validator.TagValidator;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -52,12 +54,36 @@ public class TagBaseController {
 
     }
 
+
+    @GetMapping ("/auth/tagCount/{equipid}")
+    @ResponseBody
+    public ResponseEntity authTagCount(@PathVariable("equipid") long equipid){
+
+        TbEquipInfo equipInfo = tbService.findEquipById(equipid);
+
+        long count = tbService.getTagCountByEquipid(equipInfo);
+
+        HashMap<String,Long> countInfo = new HashMap<>();
+
+        countInfo.put("tagCount", count);
+
+
+        return new ResponseEntity(countInfo , HttpStatus.OK) ;
+
+    }
+
+
+
+
     @GetMapping ("/auth/tagInfo/{equipid}")
     @ResponseBody
-    public ResponseEntity authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request){
+    public ResponseEntity authTagbase(@PathVariable("equipid") long equipid, HttpServletRequest request , Pageable pageable){
 
-        List<TbTagBase> tagInfos = tbService.findTagById(equipid);
+        TbEquipInfo equipInfo = tbService.findEquipById(equipid);
 
+        Page<TbTagBase> tagPage = tbService.findTagById(equipInfo ,pageable);
+
+        List<TbTagBase> tagInfos = tagPage.getContent();
 
 
 
@@ -106,7 +132,7 @@ public class TagBaseController {
 
           Set<String> kSet = addrValMap.keySet();
 
-          
+//           동일내용 스트림으로 변환
 //            for (int i = 0 ;  i < params.length ; i++){
 //              for(String key :  kSet){
 //                if(params[i].get("displayaddress").equals(key)){
@@ -144,7 +170,7 @@ public class TagBaseController {
 
         tagBase.setTagname(map.get("tagName"));
         tagBase.setDescription(map.get("description"));
-        tagBase.setEquip_id(tbEquipInfo);
+        tagBase.setEquipid(tbEquipInfo);
         tagBase.setMemorydevicename(map.get("memoryName"));
         tagBase.setBlockno(0);
         try{

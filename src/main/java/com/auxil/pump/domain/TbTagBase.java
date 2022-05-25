@@ -15,7 +15,7 @@ public class TbTagBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private long tag_id;
+    private long tagid;
 
     @Column(name= "TAGNAME" , nullable = false)
     private String tagname;
@@ -25,7 +25,7 @@ public class TbTagBase {
 
     @ManyToOne
     @JoinColumn(name = "EQUIPID" , nullable = false)
-    private TbEquipInfo equip_id;
+    private TbEquipInfo equipid;
 
     @Column(name = "MEMORY_DEVICE_NAME" , nullable = false)
     private String memorydevicename;

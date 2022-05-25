@@ -36,8 +36,8 @@ public class TagValidator implements Validator {
     public void validate(Object target, Errors errors) {
         TbTagBase tagBase = (TbTagBase)target;
 
-        List<TbTagBase> tagList = tagRepository.findByEquipid(tagBase.getEquip_id().getEquipid());
-        String equipType = tagBase.getEquip_id().getEquip_type().getEquip_type();
+        List<TbTagBase> tagList = tagRepository.findByEquipid(tagBase.getEquipid());
+        String equipType = tagBase.getEquipid().getEquip_type().getEquip_type();
 
         factoryEquipType = equipTypeFactory.createEquipType(equipType);
 

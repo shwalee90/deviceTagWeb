@@ -44,20 +44,7 @@ public class TagBaseRepositoryTest extends RepositoryTestTemplate {
 
 
 
-    @Test
-    void findMemoryList(){
-
-        // given
-        long equip_id = 2;
-
-
-        List<TbTagBase> tagList = tagRepository.findByEquipid(equip_id);
-
-
-        tagList.stream().forEach(System.out::println);
-
-
-    }
+//
 
 
 

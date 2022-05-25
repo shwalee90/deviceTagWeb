@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import TagInputModal from './Modals/TagInputModal';
 import axios from "axios";
+import Paging from './Pagination/Paging';
+import '../css/Pagination.css';
 class TagInfoComponent extends Component {
-
 
         constructor(props) {
 
@@ -15,97 +16,111 @@ class TagInfoComponent extends Component {
                     currentTime : '',
                     realTimeVal : [],
                     rstMsg : '',
+                    currentPage : 1,
+                    totalPosts : '',
+                    postPerPage : 10,
                   }
+           this.handleClick = this.handleClick.bind(this);
          }
 
+         handleClick(pageNum) {
 
-             componentDidMount() {
-                this._getListData();
-                this._getMemoryList();
+             this.handlePageChange(pageNum);
 
-                this.launchInterval();
+           }
 
+         componentDidMount() {
+            this._getTotalTag();
+            this.handlePageChange(this.state.currentPage);
+            this._getMemoryList();
+            this.launchInterval();
+          }
 
-              }
+          componentDidUpdate(prevProps){
+              if(prevProps.equipid !== this.props.equipid){
+                   this._getTotalTag();
+                   this.handlePageChange();
+                   this._getMemoryList();
 
+                  }
+           }
 
-             componentDidUpdate(prevProps){
-                 if(prevProps.equipid !== this.props.equipid){
-                      this._getListData();
-                      this._getMemoryList();
+          _getTotalTag(){
+              axios.get(`/auth/tagCount/${this.props.equipid}`, {
+                                               headers: {
+                                                                 "Content-Type": `application/json`,
+                                                                 "token" : localStorage.getItem('token'),
+                                                                 }})
+                                               .then(response => {
+                                                             console.log(response);
+                                                             this.setState({ totalPosts : response.data.tagCount })
+                                                       })
+          }
 
-                     }
+          launchInterval() {
+              this.interval = setInterval(() => {
 
-                   }
+                   console.log("check data");
+                   console.log(this.state.data.data);
 
-
-
-             launchInterval() {
-                 this.interval = setInterval(() => {
-
-                      console.log("check data");
-                      console.log(this.state.data.data);
-
-                     this._getRtValue();
-                     this.setState({
-                     currentTime: new Date().toLocaleString()
-                   });
-                 }, 10000);
-               }
-
-
-             componentWillUnmount(){
-                    console.log("###################################unmount")
-                    clearInterval(this.interval);
-                }
-
-
-
-             _getRtValue() {
-                                axios.post(`/auth/realTimeTagValue/${this.props.equipid}`
-                                , JSON.stringify(this.state.data.data),{
-                                 headers: {
-                                                   "Content-Type": `application/json`,
-                                                   "token" : localStorage.getItem('token'),
-                                                   }})
-                                 .then(response => {
-                                               console.log(response);
-                                               this.setState({ data : response })
-                                         })
-                                 .catch(response =>{
-                                 })
+                  this._getRtValue();
+                  this.setState({
+                  currentTime: new Date().toLocaleString()
+                });
+              }, 10000);
+          }
 
 
-                     }
+          componentWillUnmount(){
+                 console.log("###################################unmount")
+                 clearInterval(this.interval);
+             }
 
 
-             _getMemoryList = async function() {
-              const memoryList = await axios(`/auth/memoryList/${this.props.equipid}`, {
-                method : 'GET',
-                headers: {
-                           "Content-Type": `application/json`,
-                           "token" : localStorage.getItem('token')
-                                                               }
-              })
 
-                    console.log(memoryList);
-                    this.setState({ memory_data : memoryList })
-              }
-
-
-              _getListData = async function() {
-                const data_list = await axios(`/auth/tagInfo/${this.props.equipid}`, {
-                  method : 'GET',
-                  headers: {
-                             "Content-Type": `application/json`,
-                             "token" : localStorage.getItem('token')
-                                                                 }
-                })
+          _getRtValue() {
+                     axios.post(`/auth/realTimeTagValue/${this.props.equipid}`
+                     , JSON.stringify(this.state.data.data),{
+                      headers: {
+                                        "Content-Type": `application/json`,
+                                        "token" : localStorage.getItem('token'),
+                                        }})
+                      .then(response => {
+                                    console.log(response);
+                                    this.setState({ data : response })
+                              })
+                      .catch(response =>{
+                      })
+          }
 
 
-                this.setState({ data : data_list })
-                console.log(data_list);
-              }
+          _getMemoryList = async function() {
+           const memoryList = await axios(`/auth/memoryList/${this.props.equipid}`, {
+             method : 'GET',
+             headers: {
+                        "Content-Type": `application/json`,
+                        "token" : localStorage.getItem('token')
+                                                            }
+           })
+
+                 console.log(memoryList);
+                 this.setState({ memory_data : memoryList })
+           }
+
+
+           _getListData = async function() {
+             const data_list = await axios(`/auth/tagInfo/${this.props.equipid}`,
+             {
+               method : 'GET',
+               headers: {
+                          "Content-Type": `application/json`,
+                          "token" : localStorage.getItem('token')
+                                                              }
+             })
+
+              this.setState({ data : data_list })
+              console.log(data_list);
+            }
 
             openModal = () => {
                 this.setState({ modalOpen: true })
@@ -114,15 +129,29 @@ class TagInfoComponent extends Component {
                 this.setState({ modalOpen: false })
             }
 
+            handlePageChange = async function(pageNum) {
+              const pageList = await axios(`/auth/tagInfo/${this.props.equipid}?page=${pageNum-1}&size=${this.state.postPerPage}`,
+              {
+                method : 'GET',
+                headers: {
+                           "Content-Type": `application/json`,
+                           "token" : localStorage.getItem('token')
+                                                               }
+              })
+
+                 console.log(pageList);
+                 this.setState({ data : pageList,
+                                currentPage : pageNum ,
+                  })
 
 
-
+              }
 
     render() {
 
            let list = this.state.data.data;
-          // let realTimeVal = this.state.realTimeVal.data;
-
+           const currentPage = this.state.currentPage;
+           const pageSize = this.state.pageSize;
 
 
         return (
@@ -146,9 +175,9 @@ class TagInfoComponent extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { list  ? list.map( (el) => {
+                        { list ? list.map( (el) => {
                                                       return(
-                                                        <tr  key={el.tagname}>
+                                                        <tr key={el.tagname}>
                                                           <td> {el.tagname} </td>
                                                           <td> {el.description} </td>
                                                           <td> {el.datatype} </td>
@@ -162,10 +191,14 @@ class TagInfoComponent extends Component {
                                                       : <li> {this.props.equipid} 장비에 테그가 없습니다.</li>}
                     </tbody>
                 </table>
-            </>
-        )
-    }
 
+                <Paging totalCount = {this.state.totalPosts} page={this.state.currentPage}
+                 postPerPage={this.state.postPerPage} pageRangeDisplayed={5}
+                 handlePageChange={this.handleClick}/>
+
+            </>
+        );
+    }
 
 }
 

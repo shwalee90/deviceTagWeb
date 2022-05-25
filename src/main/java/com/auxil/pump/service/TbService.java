@@ -7,6 +7,8 @@ import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.repository.SpringDataEquipRepository;
 import com.auxil.pump.repository.SpringDataTagRepository;
 import com.auxil.pump.repository.SpringDataTbMemoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -32,8 +34,8 @@ public class TbService {
     }
 
 
-    public List<TbTagBase> findTagById(long equipID) {return tagRepository.findByEquipid(equipID);
-    }
+    public Page<TbTagBase> findTagById(TbEquipInfo equip , Pageable pageable) {return tagRepository.findByEquipidOrderByTagidDesc(equip , pageable);
+    };
 
     public TbEquipInfo findEquipById(long equipID) {return  equipRepository.findByEquipid(equipID);
     };
@@ -47,6 +49,10 @@ public class TbService {
 
 
     public void insertTag(TbTagBase tbTagBase) {tagRepository.save(tbTagBase);
+    };
+
+    public long getTagCountByEquipid(TbEquipInfo equipInfo) {
+       return tagRepository.countByEquipid(equipInfo);
     };
 
 
