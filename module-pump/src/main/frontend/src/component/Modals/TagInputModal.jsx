@@ -8,7 +8,7 @@ class TagInputModal extends Component {
 
         constructor(props) {
             super(props)
-
+            this.formRef = React.createRef();
             this.state = {
                 tagName: '',
                 address: '' ,
@@ -40,6 +40,8 @@ class TagInputModal extends Component {
          }
 
 
+
+
          addTagClicked() {
                  let data = {
                              tagName : this.state.tagName,
@@ -58,17 +60,29 @@ class TagInputModal extends Component {
                                        }})
                      .then(response => {
                                  console.log(response)
-                                  this.setState({ rst_msg : response.data.result ,
-                                                  errCheck : response.data.result[0].code ,
+
+                                 this.setState({ rst_msg : response.data.result ,
+                                                 errCheck : response.data.result[0].code ,
+                                                 tagName: '',
+                                                 address: '' ,
+                                                 description: '',
+                                                 dataType : 'Boolean' ,
+                                                 access : 'READ' ,
+                                                 memoryName : 'C',
                                    })
+
+
+
                              })
                      .catch(function(error){
                         if(error.response){
                             console.log(error.response);
-                              this.setState({ rst_msg : error.response.data.result })
+                              this.setState({ rst_msg : 'error catch' })
                         }
 
                      });
+
+
 
          }
 
@@ -80,6 +94,8 @@ class TagInputModal extends Component {
 
           let rst_msg = this.state.rst_msg;
 
+
+
           return (
             <div className={open ? 'openModal modal' : 'modal'}>
               {open ? (
@@ -88,7 +104,7 @@ class TagInputModal extends Component {
                     {header}
                   </header>
                   <main>
-                     <div className="modalForm">
+                     <div className="modalForm" ref={this.formRef}>
                         <li> TAG Name: <input type="text" name = "tagName" value={this.state.tagName} onChange={this.handleChange}/></li>
                         <li> MEMORY TYPE :
                                           <select key={uuid()} name="memoryName" value={this.state.memoryName} onChange={this.handleChange}>
@@ -125,8 +141,6 @@ class TagInputModal extends Component {
                           return (<li class="rstMsg" key={uuid()}>에러필드 : {el.field} 에러코드 :{el.code}</li>) }) }
 
                      </div>
-
-
 
 
                   </main>

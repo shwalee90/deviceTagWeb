@@ -67,7 +67,7 @@ class TagInfoComponent extends Component {
                   this.setState({
                   currentTime: new Date().toLocaleString()
                 });
-              }, 10000);
+              }, 100000);
           }
 
 
