@@ -1,0 +1,13 @@
+server:
+  port: 7001
+
+#default
+spring:
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+
+
+
+

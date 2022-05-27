@@ -28,11 +28,10 @@ class LoginApp extends Component {
                              <Route exact path="/members/new"  component={MemberNewComponent}/>
                              <AuthenticatedRoute path="/welcome" component={WelcomeComponent}/>
                              <AuthenticatedRoute path="/test" component={TestComponent}/>
-                             <Route
-                                 path="/auth/pump/:equipid" component={PumpHomeComponent}
+                             <Route path="/auth/pump/:equipid" component={PumpHomeComponent}
                              />
                              <Route path="/auth/pump" component={PumpHomeComponent}
-                                                          />
+                             />
                              <Route component={ErrorComponent}/>
 
                         </Switch>

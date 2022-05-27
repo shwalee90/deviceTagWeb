@@ -14,6 +14,7 @@ public interface SpringDataTagRepository extends JpaRepository<TbTagBase, Long> 
 
             Page<TbTagBase> findByEquipidOrderByTagidDesc(TbEquipInfo equip , Pageable pageable);
 
+
             List<TbTagBase> findByEquipid(TbEquipInfo equip);
 
             long countByEquipid(TbEquipInfo equip);

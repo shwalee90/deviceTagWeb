@@ -56,6 +56,11 @@ subprojects {
 		implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 		implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
+
+
+
+
+
 		// modbus 통신 오픈소스
 		implementation group: 'com.digitalpetri.modbus', name: 'modbus-master-tcp', version: '1.2.0'
 		implementation group: 'com.digitalpetri.modbus', name: 'modbus-slave-tcp', version: '1.2.0'
@@ -76,6 +81,9 @@ project(':module-pump') {
 project(':module-middle') {
 	// 향후 middle 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
 	dependencies {
+	//	implementation project(':module-pump')
+		implementation 'org.springframework.boot:spring-boot-starter-batch'
+
 	}
 }
 
