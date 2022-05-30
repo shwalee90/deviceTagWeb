@@ -53,7 +53,7 @@ class TagInputModal extends Component {
                              id : this.props.id,
 
                              };
-                    axios.post("/auth/insertTag" , JSON.stringify(data),{
+                    axios.post("/tagWeb/auth/insertTag" , JSON.stringify(data),{
                      headers: {
                                        "Content-Type": `application/json`,
                                        "token" : localStorage.getItem('token'),

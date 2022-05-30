@@ -28,6 +28,7 @@ import java.net.HttpCookie;
 import java.util.Date;
 import java.util.HashMap;
 
+@BaseUrlAnnotation
 @RequiredArgsConstructor
 @Controller
 public class HomeController implements ErrorController {

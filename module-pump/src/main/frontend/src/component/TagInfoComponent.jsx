@@ -46,7 +46,7 @@ class TagInfoComponent extends Component {
            }
 
           _getTotalTag(){
-              axios.get(`/auth/tagCount/${this.props.equipid}`, {
+              axios.get(`/tagWeb/auth/tagCount/${this.props.equipid}`, {
                                                headers: {
                                                                  "Content-Type": `application/json`,
                                                                  "token" : localStorage.getItem('token'),
@@ -79,7 +79,7 @@ class TagInfoComponent extends Component {
 
 
           _getRtValue() {
-                     axios.post(`/auth/realTimeTagValue/${this.props.equipid}`
+                     axios.post(`/tagWeb/auth/realTimeTagValue/${this.props.equipid}`
                      , JSON.stringify(this.state.data.data),{
                       headers: {
                                         "Content-Type": `application/json`,
@@ -95,7 +95,7 @@ class TagInfoComponent extends Component {
 
 
           _getMemoryList = async function() {
-           const memoryList = await axios(`/auth/memoryList/${this.props.equipid}`, {
+           const memoryList = await axios(`/tagWeb/auth/memoryList/${this.props.equipid}`, {
              method : 'GET',
              headers: {
                         "Content-Type": `application/json`,
@@ -109,7 +109,7 @@ class TagInfoComponent extends Component {
 
 
            _getListData = async function() {
-             const data_list = await axios(`/auth/tagInfo/${this.props.equipid}`,
+             const data_list = await axios(`/tagWeb/auth/tagInfo/${this.props.equipid}`,
              {
                method : 'GET',
                headers: {
@@ -130,7 +130,7 @@ class TagInfoComponent extends Component {
             }
 
             handlePageChange = async function(pageNum) {
-              const pageList = await axios(`/auth/tagInfo/${this.props.equipid}?page=${pageNum-1}&size=${this.state.postPerPage}`,
+              const pageList = await axios(`/tagWeb/auth/tagInfo/${this.props.equipid}?page=${pageNum-1}&size=${this.state.postPerPage}`,
               {
                 method : 'GET',
                 headers: {

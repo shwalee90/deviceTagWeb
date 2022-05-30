@@ -5,17 +5,15 @@ server:
 spring:
   application:
     name: eureka-server
-  security:
-    user:
-      name: admin
-      password: admin
-        
+
 eureka:
+  instance:
+    hostname: localhost
   client:
     registerWithEureka: false
     fetchRegistry: false
-  server:
-    waitTimeInMsWhenSyncEmpty: 1000
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 
 

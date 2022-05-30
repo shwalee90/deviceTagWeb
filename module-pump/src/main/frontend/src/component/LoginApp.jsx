@@ -23,14 +23,14 @@ class LoginApp extends Component {
                     <div>
                         <HeaderWithRouter/>
                         <Switch>
-                             <Route exact path="/"  component={WelcomeComponent}/>
-                             <Route exact path="/login" component={LoginComponent}/>
-                             <Route exact path="/members/new"  component={MemberNewComponent}/>
-                             <AuthenticatedRoute path="/welcome" component={WelcomeComponent}/>
-                             <AuthenticatedRoute path="/test" component={TestComponent}/>
-                             <Route path="/auth/pump/:equipid" component={PumpHomeComponent}
+                             <Route exact path="/tagWeb"  component={WelcomeComponent}/>
+                             <Route exact path="/tagWeb/login" component={LoginComponent}/>
+                             <Route exact path="/tagWeb/members/new"  component={MemberNewComponent}/>
+                             <AuthenticatedRoute path="/tagWeb/welcome" component={WelcomeComponent}/>
+                             <AuthenticatedRoute path="/tagWeb/test" component={TestComponent}/>
+                             <Route path="/tagWeb/auth/pump/:equipid" component={PumpHomeComponent}
                              />
-                             <Route path="/auth/pump" component={PumpHomeComponent}
+                             <Route path="/tagWeb/auth/pump" component={PumpHomeComponent}
                              />
                              <Route component={ErrorComponent}/>
 

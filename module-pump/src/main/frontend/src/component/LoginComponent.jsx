@@ -50,14 +50,14 @@ class LoginComponent extends Component {
             let data = {username : this.state.username,
                         password : this.state.password};
 
-             axios.post("/login" , JSON.stringify(data),{
+             axios.post("/tagWeb/login" , JSON.stringify(data),{
                 headers: {
                                   "Content-Type": `application/json`,
                                 }})
             .then(response => {
                          console.log(response)
                          AuthenticationService.registerSuccessfulLoginForJwt(this.state.username,response.data.result.accessToken)
-                         this.props.history.push(`/welcome`)
+                         this.props.history.push(`/tagWeb/welcome`)
                      }).catch( () =>{
                 this.setState({showSuccessMessage:false})
                 this.setState({hasLoginFailed:true})

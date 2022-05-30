@@ -21,7 +21,7 @@ class EquipInfoComponent extends Component {
       }
 
       _getListData = async function() {
-        const data_list = await axios('/auth/equip', {
+        const data_list = await axios('/tagWeb/auth/equip', {
           method : 'GET',
           headers: {
                      "Content-Type": `application/json`,

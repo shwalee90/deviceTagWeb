@@ -9,4 +9,5 @@ rootProject.name = 'pump'
 include 'module-pump'
 include 'module-middle'
 include 'module-eureka'
+include 'module-gateway'
 

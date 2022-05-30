@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 
+@BaseUrlAnnotation
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
