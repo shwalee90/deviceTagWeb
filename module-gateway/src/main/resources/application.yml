@@ -2,10 +2,10 @@ server:
   port: 7000
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
@@ -14,11 +14,11 @@ spring:
     gateway:
       routes:
         - id: web-service
-          uri: http://localhost:7001/
+          uri: lb://WEB-SERVICE
           predicates:
             - Path=/tagWeb/**
         - id: middle-service
-          uri: http://localhost:7002/
+          uri: lb://MIDDLE-SERVICE
           predicates:
             - Path=/middle-service/**
 
