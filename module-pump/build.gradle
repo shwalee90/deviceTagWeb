@@ -21,36 +21,23 @@ tasks.named('test') {
 }
 
 
-
-def webappDir = "$projectDir/src/main/frontend"
+def frontendDir = "$projectDir/frontend"
 
 sourceSets {
     main {
         resources {
-            srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
+            srcDirs = ["$projectDir/src/main/resources"]
         }
     }
 }
 
 processResources {
-    dependsOn "buildReact"
-}
-
-task buildReact(type: Exec) {
-    dependsOn "installReact"
-    workingDir "$webappDir"
-    inputs.dir "$webappDir"
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run-script", "build"
-    } else {
-        commandLine "npm", "run-script", "build"
-    }
+    dependsOn "copyReactBuildFiles"
 }
 
 task installReact(type: Exec) {
-    workingDir "$webappDir"
-    inputs.dir "$webappDir"
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
@@ -61,5 +48,20 @@ task installReact(type: Exec) {
     }
 }
 
+task buildReact(type: Exec) {
+    dependsOn "installReact"
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
+}
 
-
+task copyReactBuildFiles(type: Copy) {
+    dependsOn "buildReact"
+    from "$frontendDir/build"
+    into "$buildDir/resources/main/static"
+}
