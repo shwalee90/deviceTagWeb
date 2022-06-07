@@ -1,0 +1,12 @@
+// babel.js
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.9"
+      }
+    ]
+  ]
+}

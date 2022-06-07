@@ -27,7 +27,7 @@ class LoginApp extends Component {
                              <Route exact path="/tagWeb/login" component={LoginComponent}/>
                              <Route exact path="/tagWeb/members/new"  component={MemberNewComponent}/>
                              <AuthenticatedRoute path="/tagWeb/welcome" component={WelcomeComponent}/>
-                             <AuthenticatedRoute path="/tagWeb/test" component={TestComponent}/>
+                             <Route exact path="/tagWeb/test" component={TestComponent}/>
                              <Route path="/tagWeb/auth/pump/:equipid" component={PumpHomeComponent}
                              />
                              <Route path="/tagWeb/auth/pump" component={PumpHomeComponent}

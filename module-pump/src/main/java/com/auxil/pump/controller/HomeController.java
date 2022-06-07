@@ -28,9 +28,10 @@ import java.net.HttpCookie;
 import java.util.Date;
 import java.util.HashMap;
 
-@BaseUrlAnnotation
+
 @RequiredArgsConstructor
-@Controller
+@RestController
+@RequestMapping("/tagWeb")
 public class HomeController implements ErrorController {
 
     private final PasswordEncoder passwordEncoder;
@@ -45,8 +46,10 @@ public class HomeController implements ErrorController {
         return "index.html";
     }
 
-
-
+    @GetMapping("/test")
+    public String test(){
+        return "tttt";
+    }
 
 
 
