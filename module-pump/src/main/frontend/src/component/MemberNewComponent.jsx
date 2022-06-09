@@ -40,12 +40,12 @@ class MemberNewComponent extends Component {
             let data = {username : this.state.username,
                         password : this.state.password};
 
-             axios.post("/tagWeb/members/new" , JSON.stringify(data),{
+             axios.post("/members/new" , JSON.stringify(data),{
                 headers: {
                                   "Content-Type": `application/json`,
                                 }})
             .then(response => {
-                      this.props.history.push(`/tagWeb/welcome`)
+                      this.props.history.push(`/welcome`)
                      }).catch( () =>{
                 this.setState({showSuccessMessage:false})
                 this.setState({hasLoginFailed:true})

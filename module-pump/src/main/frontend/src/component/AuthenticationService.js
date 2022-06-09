@@ -4,7 +4,7 @@ class AuthenticationService {
 
     // send username, password to the SERVER
     executeJwtAuthenticationService(username, password) {
-        return axios.post('http://localhost:7000/tagWeb/authenticate', {
+        return axios.post('http://localhost:7000/authenticate', {
             username,
             password
         })

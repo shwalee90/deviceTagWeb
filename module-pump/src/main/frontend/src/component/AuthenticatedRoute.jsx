@@ -7,7 +7,7 @@ class AuthenticatedRoute extends Component {
         if(AuthenticationService.isUserLoggedIn()) {
             return <Route {...this.props}/>
         } else {
-            return <Redirect to="/tagWeb/login"/>
+            return <Redirect to="/login"/>
         }
 
     }
