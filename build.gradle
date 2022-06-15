@@ -96,6 +96,18 @@ project(':module-middle') {
 		implementation 'org.springframework.boot:spring-boot-starter-web'
 		implementation 'org.springframework.boot:spring-boot-starter-batch'
 		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+		// spring - redis
+		implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+		implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
+		// modbus 통신 오픈소스
+		implementation group: 'com.digitalpetri.modbus', name: 'modbus-master-tcp', version: '1.2.0'
+		implementation group: 'com.digitalpetri.modbus', name: 'modbus-slave-tcp', version: '1.2.0'
+
+		compileOnly project(':module-pump')
+
 
 	}
 }

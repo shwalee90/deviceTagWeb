@@ -36,7 +36,7 @@ public class TbService {
     public Page<TbTagBase> findTagById(TbEquipInfo equip , Pageable pageable) {return tagRepository.findByEquipidOrderByTagidDesc(equip , pageable);
     };
 
-    public List<TbTagBase> findTagByIdForBatch(TbEquipInfo equip) {return tagRepository.findByEquipid(equip);
+    public List<TbTagBase> findTagForBatch() {return tagRepository.findAll();
     };
 
 
@@ -57,7 +57,6 @@ public class TbService {
     public long getTagCountByEquipid(TbEquipInfo equipInfo) {
        return tagRepository.countByEquipid(equipInfo);
     };
-
 
 
 }

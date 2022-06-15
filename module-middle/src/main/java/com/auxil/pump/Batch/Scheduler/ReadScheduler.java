@@ -36,6 +36,13 @@ public class ReadScheduler {
 
         try {
             jobLauncher.run( tagReadJob, jobParameters);
+
+
+
+
+
+
+
         } catch (JobRestartException e) {
             e.printStackTrace();
         }

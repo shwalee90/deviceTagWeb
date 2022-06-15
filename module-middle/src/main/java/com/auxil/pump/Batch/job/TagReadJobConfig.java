@@ -6,6 +6,11 @@ package com.auxil.pump.Batch.job;
 //import com.auxil.pump.dto.RealTimeModbusConnDTO;
 //import com.auxil.pump.service.RealTimeService;
 //import com.auxil.pump.service.TbService;
+import com.auxil.pump.domain.TbEquipInfo;
+import com.auxil.pump.domain.TbTagBase;
+import com.auxil.pump.dto.RealTimeModbusConnDTO;
+import com.auxil.pump.service.RealTimeService;
+import com.auxil.pump.service.TbService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -23,8 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -34,6 +39,12 @@ public class TagReadJobConfig  {
     private JobBuilderFactory jobBuilderFactory;
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
+
+    @Autowired
+    private RealTimeService realTimeService;
+
+    @Autowired
+    private TbService tbService;
 
 //    @Autowired
 //    private TbService tbService;
@@ -64,8 +75,32 @@ public class TagReadJobConfig  {
         return new Tasklet() {
             @Override
             public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-
                 log.info("schedule ok");
+
+
+
+                List<TbTagBase> allTag = tbService.findTagForBatch();
+                Set<TbEquipInfo> equipSet = new HashSet<>();
+
+                allTag.forEach( es ->  equipSet.add(es.getEquipid()));
+
+                for( TbEquipInfo equipInfo : equipSet){
+                    List<RealTimeModbusConnDTO> tagList = new ArrayList<>();
+                    List<TbTagBase> tagGroup = (List<TbTagBase>) allTag.stream().filter(at -> at.getEquipid().equals(equipInfo));
+
+                    tagGroup.stream().forEach( tag -> tagList.add(new RealTimeModbusConnDTO(tag.getMemorydevicename(),tag.getAddress())));
+
+
+                    if(equipInfo.getEquip_type().getEquip_type().equalsIgnoreCase("MODBUS")){
+                        Map<String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , tagList);
+
+                        System.out.println(addrValMap);
+
+                    }
+
+
+                }
+
 
                 return RepeatStatus.FINISHED;
             }
