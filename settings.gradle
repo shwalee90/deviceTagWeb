@@ -10,4 +10,5 @@ include 'module-pump'
 include 'module-middle'
 include 'module-eureka'
 include 'module-gateway'
+include 'module-core'
 

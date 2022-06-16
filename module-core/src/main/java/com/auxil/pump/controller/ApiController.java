@@ -40,8 +40,7 @@ public class ApiController {
 
     @Lazy
     private final TestMod testMod;
-    @Lazy
-    private final TbService tbService;
+
 
 
     @GetMapping ("/auth/pump")
@@ -53,17 +52,15 @@ public class ApiController {
     }
 
 
-    @GetMapping("/api/allTag")
-    public ResponseEntity allTag(){
 
-        List<TbTagBase> allTag = tbService.findTagForBatch();
 
-        return new ResponseEntity<List<TbTagBase>>(allTag , HttpStatus.OK) ;
-    }
 
     @GetMapping("/modTest")
     public void modTest(){
+
         testMod.quickStart();
+
+
     }
 
 

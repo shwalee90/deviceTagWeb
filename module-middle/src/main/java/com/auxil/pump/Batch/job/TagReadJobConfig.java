@@ -6,6 +6,7 @@ package com.auxil.pump.Batch.job;
 //import com.auxil.pump.dto.RealTimeModbusConnDTO;
 //import com.auxil.pump.service.RealTimeService;
 //import com.auxil.pump.service.TbService;
+import com.auxil.pump.Service.ApiService;
 import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.dto.RealTimeModbusConnDTO;
@@ -27,24 +28,30 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class TagReadJobConfig  {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+    @Lazy
+    private final JobBuilderFactory jobBuilderFactory;
+    @Lazy
+    private final StepBuilderFactory stepBuilderFactory;
+    @Lazy
+    private final RealTimeService realTimeService;
 
-    @Autowired
-    private RealTimeService realTimeService;
+    @Lazy
+    private final TbService tbService;
 
-    @Autowired
-    private TbService tbService;
+    @Lazy
+    private final ApiService apiService;
+
+
 
 //    @Autowired
 //    private TbService tbService;
@@ -79,14 +86,14 @@ public class TagReadJobConfig  {
 
 
 
-                List<TbTagBase> allTag = tbService.findTagForBatch();
+                List<TbTagBase> allTag =   apiService.getAllTag();
                 Set<TbEquipInfo> equipSet = new HashSet<>();
 
                 allTag.forEach( es ->  equipSet.add(es.getEquipid()));
 
                 for( TbEquipInfo equipInfo : equipSet){
                     List<RealTimeModbusConnDTO> tagList = new ArrayList<>();
-                    List<TbTagBase> tagGroup = (List<TbTagBase>) allTag.stream().filter(at -> at.getEquipid().equals(equipInfo));
+                    List<TbTagBase> tagGroup =  allTag.stream().filter(at -> at.getEquipid().equals(equipInfo)).collect(Collectors.toList());
 
                     tagGroup.stream().forEach( tag -> tagList.add(new RealTimeModbusConnDTO(tag.getMemorydevicename(),tag.getAddress())));
 
