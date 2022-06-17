@@ -11,7 +11,6 @@ import com.auxil.pump.domain.TbEquipInfo;
 import com.auxil.pump.domain.TbTagBase;
 import com.auxil.pump.dto.RealTimeModbusConnDTO;
 import com.auxil.pump.service.RealTimeService;
-import com.auxil.pump.service.TbService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -29,7 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,11 +47,14 @@ public class TagReadJobConfig  {
     @Lazy
     private final RealTimeService realTimeService;
 
-    @Lazy
-    private final TbService tbService;
-
+//    @Lazy
+//    private final TbService tbService;
+//
     @Lazy
     private final ApiService apiService;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
 
 
@@ -84,38 +89,31 @@ public class TagReadJobConfig  {
             public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
                 log.info("schedule ok");
 
-
-
                 List<TbTagBase> allTag =   apiService.getAllTag();
-                Set<TbEquipInfo> equipSet = new HashSet<>();
+                Set<Long> equipSet = new HashSet<>();
 
-                allTag.forEach( es ->  equipSet.add(es.getEquipid()));
-
-                for( TbEquipInfo equipInfo : equipSet){
-                    List<RealTimeModbusConnDTO> tagList = new ArrayList<>();
-                    List<TbTagBase> tagGroup =  allTag.stream().filter(at -> at.getEquipid().equals(equipInfo)).collect(Collectors.toList());
-
-                    tagGroup.stream().forEach( tag -> tagList.add(new RealTimeModbusConnDTO(tag.getMemorydevicename(),tag.getAddress())));
+                allTag.forEach( es ->  equipSet.add(es.getEquipid().getEquipid()));
 
 
-                    if(equipInfo.getEquip_type().getEquip_type().equalsIgnoreCase("MODBUS")){
-                        Map<String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , tagList);
+                for( Long equipId : equipSet){
+                    List<RealTimeModbusConnDTO> dtoList = new ArrayList<>();
+                    List<TbTagBase> modtagList = allTag.stream().filter(at -> at.getEquipid().getEquipid() == equipId).collect(Collectors.toList());
+                    TbEquipInfo equipInfo = modtagList.get(0).getEquipid();
+                    String equipType = equipInfo.getEquip_type().getEquip_type();
+                    if(equipType.equalsIgnoreCase("MODBUS")) {
 
-                        System.out.println(addrValMap);
+                        List<TbTagBase> tagGroup = allTag.stream().filter(at -> at.getEquipid().getEquipid() == equipId).collect(Collectors.toList());
 
+                        tagGroup.stream().forEach(tag -> dtoList.add(new RealTimeModbusConnDTO(tag.getMemorydevicename(), tag.getAddress())));
+
+                        Map<String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , dtoList);
+                        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+                        addrValMap.keySet().stream().filter(key -> addrValMap.get(key) != null)
+                                .forEach(key ->  valueOperations.set(key, String.valueOf(addrValMap.get(key)), Duration.ofHours(1)));
                     }
-
-
                 }
-
-
                 return RepeatStatus.FINISHED;
             }
-
-
-
         };
     }
-
-
 }

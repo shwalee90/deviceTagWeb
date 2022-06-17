@@ -30,18 +30,10 @@ public class ReadScheduler {
 
         JobParameters jobParameters = new JobParameters(
                 Collections.singletonMap("requestTime",new JobParameter(System.currentTimeMillis()))
-
         );
-
 
         try {
             jobLauncher.run( tagReadJob, jobParameters);
-
-
-
-
-
-
 
         } catch (JobRestartException e) {
             e.printStackTrace();
