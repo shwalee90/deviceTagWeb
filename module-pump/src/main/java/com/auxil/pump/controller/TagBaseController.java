@@ -126,7 +126,13 @@ public class TagBaseController {
         }
 
         if(equipInfo != null){
-          Map <String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , tagList);
+
+
+
+
+            Map <String,Integer> addrValMap = realTimeService.getRedis(tagList , equipid);
+
+                    //realTimeService.readModValue(equipInfo , tagList);
 
 
 
@@ -146,8 +152,8 @@ public class TagBaseController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
             // for each 기존의 객체 이용 , map 새로운 객체 생성
-            Arrays.stream(params).filter(fa -> kSet.stream().anyMatch(Predicate.isEqual(fa.get("displayaddress"))))
-                    .forEach(fe -> fe.put("rtValue",addrValMap.get(fe.get("displayaddress"))) );
+            Arrays.stream(params).filter(fa -> kSet.stream().anyMatch(Predicate.isEqual(equipid+":"+fa.get("displayaddress"))))
+                    .forEach(fe -> fe.put("rtValue",addrValMap.get( equipid+":"+fe.get("displayaddress"))) );
 
             Arrays.stream(params).forEach(fe -> fe.put("time" , now.format(formatter)));
 

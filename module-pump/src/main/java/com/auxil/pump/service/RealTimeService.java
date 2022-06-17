@@ -14,6 +14,9 @@ import com.digitalpetri.modbus.responses.ReadHoldingRegistersResponse;
 import com.digitalpetri.modbus.responses.ReadInputRegistersResponse;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCountUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,7 +29,8 @@ public class RealTimeService {
 
     Map<String,Integer> realTimeValueMap = new HashMap<>();
 
-
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     public void quickStart(){
 
@@ -136,4 +140,16 @@ public class RealTimeService {
     }
 
 
+    public Map<String, Integer> getRedis(List<RealTimeModbusConnDTO> tagList, long equipid) {
+
+        Map<String,Integer> redisMap = new HashMap<>();
+
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+        tagList.stream().forEach( fe -> redisMap.put(equipid+":"+fe.getMemoryName()+fe.getAddress()
+                , Integer.parseInt(valueOperations.get(equipid+":"+fe.getMemoryName()+fe.getAddress()))));
+
+
+        return redisMap;
+    }
 }

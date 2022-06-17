@@ -109,7 +109,7 @@ public class TagReadJobConfig  {
                         Map<String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , dtoList);
                         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
                         addrValMap.keySet().stream().filter(key -> addrValMap.get(key) != null)
-                                .forEach(key ->  valueOperations.set(key, String.valueOf(addrValMap.get(key)), Duration.ofHours(1)));
+                                .forEach(key ->  valueOperations.set(equipId+":"+ key, String.valueOf(addrValMap.get(key)), Duration.ofHours(1)));
                     }
                 }
                 return RepeatStatus.FINISHED;
