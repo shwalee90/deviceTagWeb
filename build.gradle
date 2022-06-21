@@ -40,6 +40,7 @@ allprojects {
 
 
 	dependencies {
+		// tyymeleaf - > react
 		//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 		//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 		//	implementation 'net.logstash.logback:logstash-logback-encoder:4.11'
@@ -52,11 +53,6 @@ allprojects {
 		implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
 		//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
-
-		
-		
-		// 유레카 클라이언트
-//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server'
 	}
 }
 
@@ -82,7 +78,7 @@ project(':module-pump') {
 		implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
 
 		implementation 'org.springframework.boot:spring-boot-starter-web'
-		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
+//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
 		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 		implementation 'org.springframework.boot:spring-boot-starter-security'
 
@@ -95,7 +91,7 @@ project(':module-middle') {
 
 		implementation 'org.springframework.boot:spring-boot-starter-web'
 		implementation 'org.springframework.boot:spring-boot-starter-batch'
-		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
+//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
 		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 
@@ -113,24 +109,25 @@ project(':module-middle') {
 }
 
 
-project(':module-eureka') {
-	// 향후 eureka 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
-	dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter-web'
-		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '3.0.4'
-//		implementation group: 'com.sun.jersey.contribs' , name: 'jersey-apache-client4' , version: '1.19.4'
-	}
-}
+//project(':module-eureka') {
+//	// 향후 eureka 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
+//	dependencies {
+//		implementation 'org.springframework.boot:spring-boot-starter-web'
+//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '3.0.4'
+////		implementation group: 'com.sun.jersey.contribs' , name: 'jersey-apache-client4' , version: '1.19.4'
+//	}
+//}
 
-project(':module-gateway') {
-	// 향후 gateway 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
-	dependencies {
-		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway' , version: '3.0.4'
-		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
-
-
-
-	}
+//project(':module-gateway') {
+//	// 향후 gateway 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
+//	dependencies {
+//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway' , version: '3.0.4'
+//		implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.4'
+//
+//
+//
+//	}
+//}
 
 project(':module-core') {
 	// 향후 common 모듈에만 필요한 라이브러리가 발생하면 이곳에 추가한다.
@@ -164,7 +161,6 @@ project(':module-core') {
 
 
 
-}
 
 
 
