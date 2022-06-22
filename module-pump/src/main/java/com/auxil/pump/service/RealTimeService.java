@@ -146,8 +146,13 @@ public class RealTimeService {
 
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
+        try{
+
         tagList.stream().forEach( fe -> redisMap.put(equipid+":"+fe.getMemoryName()+fe.getAddress()
                 , Integer.parseInt(valueOperations.get(equipid+":"+fe.getMemoryName()+fe.getAddress()))));
+        }  catch (NumberFormatException ne){
+            ne.getStackTrace();
+        }
 
 
         return redisMap;

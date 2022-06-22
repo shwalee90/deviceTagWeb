@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -38,85 +39,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class TagReadJobConfig  {
+public class ExecModSimulConfig  {
 
     @Lazy
     private final JobBuilderFactory jobBuilderFactory;
     @Lazy
     private final StepBuilderFactory stepBuilderFactory;
-    @Lazy
-    private final RealTimeService realTimeService;
-
-//    @Lazy
-//    private final TbService tbService;
-//
-    @Lazy
-    private final ApiService apiService;
-
-    @Autowired
-    RedisTemplate<String, String> redisTemplate;
 
 
-
-//    @Autowired
-//    private TbService tbService;
-
-//    @Autowired
-//    private RealTimeService realTimeService;
-
-
-
-    @Bean
-    public Job tagReadJob(){
-        return jobBuilderFactory.get("tagReadJob")
-                .incrementer(new RunIdIncrementer())
-                .start(tagReadStep())
-                .build();
-    }
-
-    @JobScope
-    @Bean
-    public Step tagReadStep() {
-        return stepBuilderFactory.get("tagReadStep")
-                .tasklet(tagReadTasklet())
-                .build();
-    }
-
-    @StepScope
-    @Bean
-    public Tasklet tagReadTasklet() {
-        return new Tasklet() {
-            @Override
-            public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                log.info("schedule ok");
-
-                List<TbTagBase> allTag =   apiService.getAllTag();
-                Set<Long> equipSet = new HashSet<>();
-
-                allTag.forEach( es ->  equipSet.add(es.getEquipid().getEquipid()));
-
-
-                for( Long equipId : equipSet){
-                    List<RealTimeModbusConnDTO> dtoList = new ArrayList<>();
-                    List<TbTagBase> modtagList = allTag.stream().filter(at -> at.getEquipid().getEquipid() == equipId).collect(Collectors.toList());
-                    TbEquipInfo equipInfo = modtagList.get(0).getEquipid();
-                    String equipType = equipInfo.getEquip_type().getEquip_type();
-                    if(equipType.equalsIgnoreCase("MODBUS")) {
-
-                        List<TbTagBase> tagGroup = allTag.stream().filter(at -> at.getEquipid().getEquipid() == equipId).collect(Collectors.toList());
-
-                        tagGroup.stream().forEach(tag -> dtoList.add(new RealTimeModbusConnDTO(tag.getMemorydevicename(), tag.getAddress())));
-
-                        Map<String,Integer> addrValMap =  realTimeService.readModValue(equipInfo , dtoList);
-                        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-                        addrValMap.keySet().stream().filter(key -> addrValMap.get(key) != null)
-                                .forEach(key ->  valueOperations.set(equipId+":"+ key, String.valueOf(addrValMap.get(key)), Duration.ofHours(1)));
-                    }
-                }
-                return RepeatStatus.FINISHED;
-            }
-        };
-    }
 
     @Bean
     public Job execModsimulJob(){
@@ -143,13 +73,18 @@ public class TagReadJobConfig  {
 
                 Runtime rt = Runtime.getRuntime();
 
-                String file = "C:\\Program Files (x86)\\EmbeddedIntelligence\\Mod_RSsim\\mod_RSsim.exe";
+                String file = "..\\mod_RSsim.exe";
+                System.out.println(file);
+                log.info("file : " + file);
+
 
                 Process pro;
 
                 try{
                     pro = rt.exec(file);
                     pro.waitFor();
+                    System.out.println(file);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
