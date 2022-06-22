@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.io.File;
+
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -58,24 +60,28 @@ public class ExecModSimulConfig  {
             @Override
             public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-//                Runtime rt = Runtime.getRuntime();
+                String path = System.getProperty("user.dir");
 
-//                System.out.println(file);
-//                log.info("file : " + file);
-//
-//
-//                Process pro;
-//
-//                try{
-//                    pro = rt.exec(file);
-//                    pro.waitFor();
-//                    System.out.println(file);
-//
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                log.info(path);
 
+                Runtime rt = Runtime.getRuntime();
 
+                Process pro;
+
+                String addPath = "\\module-middle\\src\\main\\resources\\ModRSsim2.exe";
+
+                File modSim = new File(path+addPath);
+                if(modSim.exists()){
+                    try{
+                        pro = rt.exec( path+addPath);
+                        pro.waitFor();
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    log.info("simulator 가 " + path+addPath + "위치에 존재하지 않습니다.");
+                }
 
                 return RepeatStatus.FINISHED;
             }

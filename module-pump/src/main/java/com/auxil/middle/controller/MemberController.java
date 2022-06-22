@@ -27,11 +27,6 @@ public class MemberController {
     }
 
 
-//    @GetMapping("members/new")
-//    public String createForm(){
-//        return "members/createMemberForm";
-//    }
-
     @PostMapping("/members/new")
     public String create(@RequestBody HashMap<String, String> map ){
 

@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@EqualsAndHashCode(of ="uid")
 @ToString
 public class Member  {
 

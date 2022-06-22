@@ -121,15 +121,7 @@ public class TagBaseController {
         }
 
         if(equipInfo != null){
-
-
-
-
-            Map <String,Integer> addrValMap = realTimeService.getRedis(tagList , equipid);
-
-                    //realTimeService.readModValue(equipInfo , tagList);
-
-
+          Map <String,Integer> addrValMap = realTimeService.getRedis(tagList , equipid);
 
 
           Set<String> kSet = addrValMap.keySet();

@@ -27,15 +27,6 @@ public class ApiController {
     private final TbService tbService;
 
 
-    @GetMapping ("/auth/pump")
-    public void authHomeP(HttpServletRequest request){
-
-        System.out.println("token2 : " +request.getHeader("token"));
-
-
-    }
-
-
     @GetMapping("/api/allTag")
     public ResponseEntity allTag(){
 
@@ -43,12 +34,6 @@ public class ApiController {
 
         return new ResponseEntity<List<TbTagBase>>(allTag , HttpStatus.OK) ;
     }
-
-    @GetMapping("/modTest")
-    public void modTest(){
-        testMod.quickStart();
-    }
-
 
 
     @PostMapping("/pump")
@@ -60,42 +45,9 @@ public class ApiController {
 
         System.out.println("token2 : " +request.getHeader("token"));
 
-      //  request.setAttribute("token",token);
-
-//        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("token" , token);
-//
-//        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params,headers);
-//
-//
-//        RestTemplate rt = new RestTemplate();
-//        ResponseEntity <String> res = rt.exchange("http://localhost:7000/auth/home" , HttpMethod.POST
-//        , entity , String.class);
-//
-//        System.out.println(res);
-
         return "redirect:/auth/home";
 
 
     }
-
-
-
-
-
-    @PostMapping("/auth/token")
-    @ResponseBody
-    public Map<String, String> apiTokenPost() {
-        final Map<String, String> map = new HashMap<>();
-
-
-        map.put("message", "Welcome");
-        return map;
-    }
-
-
-
 
 }
