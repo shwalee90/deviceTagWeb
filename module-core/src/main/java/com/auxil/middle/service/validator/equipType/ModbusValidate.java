@@ -116,4 +116,47 @@ public class ModbusValidate implements IEquipType {
 
     }
 
+    @Override
+    public Map<String, Object> validateMemoryNameAndValue(HashMap<String, String> hm) {
+
+        String address = hm.get("address");
+        Map<String, Object> validateMap = new HashMap<>();
+        boolean valCheck = true;
+        String code = "";
+        int writeValue = Integer.parseInt(hm.get("writeValue"));
+
+
+
+        if(address.startsWith("C")){
+
+            if(writeValue == 0 || writeValue == 1 ){
+
+            }else{
+                valCheck = false;
+                code = "0 이나 1 을 입력해 주세요.";
+            }
+
+        }else if(address.startsWith("DI")){
+            if(writeValue == 0 || writeValue == 1 ){
+
+            }else{
+                valCheck = false;
+                code = "0 이나 1 을 입력해 주세요.";
+            }
+
+        }else if(address.startsWith("R")){
+
+        }else if(address.startsWith("IR")){
+
+        }else{
+            valCheck = false;
+            code = "데이터 메모리가 잘못되었습니다. C/DI/R/IR 가 아닙니다.";
+        }
+
+
+        validateMap.put("code" , code );
+        validateMap.put("valCheck" , valCheck);
+        return validateMap;
+    }
+
 }

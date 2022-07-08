@@ -9,6 +9,7 @@ import com.auxil.middle.service.RealTimeService;
 import com.auxil.middle.service.TbService;
 import com.auxil.middle.service.TestMod;
 import com.auxil.middle.service.validator.TagValidator;
+import com.auxil.middle.service.validator.TagWriteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ public class TagBaseController {
     private final RealTimeService realTimeService;
     @Lazy
     private final TagValidator tagValidator;
+    @Lazy
+    private final TagWriteValidator tagWriteValidator;
     @Lazy
     private final TestMod testMod;
 
@@ -158,10 +161,7 @@ public class TagBaseController {
     @PostMapping("/auth/insertTag")
     public ResponseEntity insertTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult ){
 
-        System.out.println(map);
-
         tagBase = new TbTagBase();
-
         TbEquipInfo  tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
 
         tagBase.setTagname(map.get("tagName"));
@@ -179,7 +179,7 @@ public class TagBaseController {
 
         String displayAddr = map.get("memoryName")+map.get("address");
         tagBase.setDisplayaddress(displayAddr);
-        tagValidator.validate(tagBase , bindingResult);
+        tagWriteValidator.validate(tagBase , bindingResult);
         if(bindingResult.hasErrors()){
             ApiResponse response = new ApiResponse();
             response.setResult(bindingResult.getAllErrors());
@@ -202,5 +202,36 @@ public class TagBaseController {
         }
 
     }
+
+    @PostMapping("/auth/writeTag")
+    public ResponseEntity writeTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult  ){
+
+
+        tagWriteValidator.validate(map , bindingResult);
+
+        if(bindingResult.hasErrors()){
+            ApiResponse response = new ApiResponse();
+            response.setResult(bindingResult.getAllErrors());
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
+        }else{
+            tbService.insertTag(tagBase);
+            ApiResponse response = new ApiResponse();
+
+            HashMap<String,String>[] hmArr = new HashMap[1];
+
+
+
+            String rstMsg ="INSERT SUCCESS";
+            HashMap<String,String> rstMap = new HashMap<>();
+            rstMap.put("code", rstMsg);
+            hmArr[0] = rstMap;
+
+            response.setResult(hmArr);
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
+        }
+
+    }
+
+
 
 }

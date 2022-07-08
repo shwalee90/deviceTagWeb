@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import TagInputModal from './Modals/TagInputModal';
+import TagWriteModal from './Modals/TagWriteModal';
 import axios from "axios";
 import Paging from './Pagination/Paging';
 import '../css/Pagination.css';
@@ -157,7 +158,7 @@ class TagInfoComponent extends Component {
         return (
             <>
                 <h1>TAG</h1>
-                    <button onClick={ this.openModal }> 모달팝업</button>
+                    <button onClick={ this.openModal }> INSERT TAG</button>
                     <TagInputModal open={ this.state.modalOpen } close={ this.closeModal }
                      memory_data = {this.state.memory_data} id= {this.props.equipid} title="insert Tag">
                      </TagInputModal>
@@ -172,6 +173,7 @@ class TagInfoComponent extends Component {
                             <th>DISPLAYADDRESS</th>
                             <th>VALUE</th>
                             <th>LOAD TIME</th>
+                            <th>WRITE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -185,6 +187,15 @@ class TagInfoComponent extends Component {
                                                           <td> {el.displayaddress} </td>
                                                           <td> {el.rtValue ? el.rtValue : 0}</td>
                                                           <td> {el.time ? el.time : null} </td>
+
+                                                          {el.tagaccess === "READ/WRITE" ?
+                                                          <td><button onClick={ this.openModal }> WRITE </button>
+                                                                              <TagWriteModal open={ this.state.modalOpen } close={ this.closeModal }
+                                                                               displayaddress = {el.displayaddress} id= {this.props.equipid} title="write Tag">
+                                                                               </TagWriteModal>
+                                                          </td> : null
+                                                          }
+
                                                         </tr>
                                                       )
                                                     })

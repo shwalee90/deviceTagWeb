@@ -1,21 +1,28 @@
 package com.auxil.middle.service.validator;
 
+import com.auxil.middle.domain.TbEquipInfo;
 import com.auxil.middle.domain.TbTagBase;
 import com.auxil.middle.repository.SpringDataTagRepository;
+import com.auxil.middle.service.TbService;
 import com.auxil.middle.service.validator.equipType.IEquipType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class TagValidator implements Validator {
+public class TagWriteValidator implements Validator {
 
     @Autowired
     SpringDataTagRepository tagRepository;
+
+    @Autowired
+    TbService tbService;
 
     @Autowired
     EquipTypeFactory equipTypeFactory;
@@ -32,35 +39,18 @@ public class TagValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        TbTagBase tagBase = (TbTagBase)target;
 
-        List<TbTagBase> tagList = tagRepository.findByEquipid(tagBase.getEquipid());
-        String equipType = tagBase.getEquipid().getEquip_type().getEquip_type();
+        HashMap<String, String> hm = (HashMap<String, String>) target;
+
+        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(hm.get("id")));
+
+        String equipType = tbEquipInfo.getEquip_type().getEquip_type();
 
         factoryEquipType = equipTypeFactory.createEquipType(equipType);
 
 
-        if((Boolean) factoryEquipType.validateMemoryNameAndAddress(tagBase).get("valCheck") == false){
-            errors.rejectValue("address", (String)factoryEquipType.validateMemoryNameAndAddress(tagBase).get("code"));
-        }
-        if((Boolean)factoryEquipType.validateMemoryNameAndType(tagBase).get("valCheck") == false){
-            errors.rejectValue("dataType", (String)factoryEquipType.validateMemoryNameAndType(tagBase).get("code"));
-        }
-
-        if(tagList.stream().anyMatch(tag -> tag.getTagname().equals(tagBase.getTagname()))){
-           errors.rejectValue("tagname", "동일 설비 내에서 TAG 이름 중복");
-        }
-
-        if(!StringUtils.hasText(tagBase.getTagname())){
-            errors.rejectValue("tagname", "TAG 이름이 입력되지 않았습니다.");
-        }
-
-        if(!StringUtils.hasText(Integer.toString(tagBase.getAddress()))){
-            errors.rejectValue("address", "address가 입력되지 않았습니다.");
-        }
-
-        if(!StringUtils.hasText(tagBase.getDataType())){
-            errors.rejectValue("datatype", "dataType가 입력되지 않았습니다.");
+        if((Boolean) factoryEquipType.validateMemoryNameAndValue(hm).get("valCheck") == false){
+            errors.rejectValue("address", (String)factoryEquipType.validateMemoryNameAndValue(hm).get("code"));
         }
 
 
