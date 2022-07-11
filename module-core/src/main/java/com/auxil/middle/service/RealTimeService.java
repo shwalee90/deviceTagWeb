@@ -1,17 +1,12 @@
 package com.auxil.middle.service;
 
 import com.auxil.middle.domain.TbEquipInfo;
+import com.auxil.middle.domain.TbTagBase;
 import com.auxil.middle.dto.RealTimeModbusConnDTO;
 import com.digitalpetri.modbus.master.ModbusTcpMaster;
 import com.digitalpetri.modbus.master.ModbusTcpMasterConfig;
-import com.digitalpetri.modbus.requests.ReadCoilsRequest;
-import com.digitalpetri.modbus.requests.ReadDiscreteInputsRequest;
-import com.digitalpetri.modbus.requests.ReadHoldingRegistersRequest;
-import com.digitalpetri.modbus.requests.ReadInputRegistersRequest;
-import com.digitalpetri.modbus.responses.ReadCoilsResponse;
-import com.digitalpetri.modbus.responses.ReadDiscreteInputsResponse;
-import com.digitalpetri.modbus.responses.ReadHoldingRegistersResponse;
-import com.digitalpetri.modbus.responses.ReadInputRegistersResponse;
+import com.digitalpetri.modbus.requests.*;
+import com.digitalpetri.modbus.responses.*;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCountUtil;
 import org.springframework.stereotype.Service;
@@ -82,7 +77,7 @@ public class RealTimeService {
 
         master.connect();
 
-        System.out.println("#######"+connList);
+        //System.out.println("#######"+connList);
 
         try{
 
@@ -136,4 +131,29 @@ public class RealTimeService {
     }
 
 
+    public void writeTag(HashMap<String, String> map, TbEquipInfo tbEquipInfo) {
+
+        String address = map.get("address");
+
+        ModbusTcpMasterConfig config = new ModbusTcpMasterConfig.Builder(tbEquipInfo.getIp()).setPort(tbEquipInfo.getPort()).build();
+        ModbusTcpMaster master = new ModbusTcpMaster(config);
+
+        master.connect();
+
+        if(address.startsWith("C")){
+
+            int addr = Integer.parseInt(address.replace("C", ""));
+
+            master.sendRequest(new WriteSingleCoilRequest(addr ,Boolean.parseBoolean(map.get("writeValue"))), 0);
+
+        }
+
+        else if(address.startsWith("R")){
+            int addr = Integer.parseInt(address.replace("R", ""));
+
+            master.sendRequest(new WriteSingleRegisterRequest(addr , Integer.parseInt(map.get("writeValue"))), 0);
+
+        }
+
+    }
 }

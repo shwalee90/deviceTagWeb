@@ -71,8 +71,8 @@ class TagWriteModal extends Component {
                   </header>
                   <main>
                      <div className="modalForm">
-                        <li> WriteValue : <input type="text" name = "tagName" value={this.state.tagName} onChange={this.handleChange}/></li>
-                         <button className="btn btn-success" onClick={this.addTagClicked}>WRITE</button>
+                        <li> WriteValue : <input type="text" name = "writeValue" value={this.state.writeValue} onChange={this.handleChange}/></li>
+                         <button className="btn btn-success" onClick={this.addWriteClicked}>WRITE</button>
                          {this.state.errCheck === "WRITE SUCCESS" ?
                           rst_msg.map((el) => {
                           return (<li class="rstMsg_success">{el.code}</li>) }) :

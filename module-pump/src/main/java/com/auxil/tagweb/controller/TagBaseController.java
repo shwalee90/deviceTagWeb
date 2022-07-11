@@ -9,6 +9,7 @@ import com.auxil.tagweb.service.RealTimeService;
 import com.auxil.tagweb.service.TbService;
 import com.auxil.tagweb.service.TestMod;
 import com.auxil.tagweb.service.validator.TagValidator;
+import com.auxil.tagweb.service.validator.TagWriteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,9 @@ public class TagBaseController {
     private final TagValidator tagValidator;
     @Lazy
     private final TestMod testMod;
+
+    @Lazy
+    private final TagWriteValidator tagWriteValidator;
 
     @GetMapping ("/auth/equip")
     @ResponseBody
@@ -199,6 +203,38 @@ public class TagBaseController {
             return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
         }
 
+
+
     }
+
+
+    @PostMapping("/auth/writeTagValue")
+    public ResponseEntity writeTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult  ){
+
+        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
+
+
+        tagWriteValidator.validate(map , bindingResult);
+
+        if(bindingResult.hasErrors()){
+            ApiResponse response = new ApiResponse();
+            response.setResult(bindingResult.getAllErrors());
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
+        }else{
+            realTimeService.writeTag(map , tbEquipInfo);
+            ApiResponse response = new ApiResponse();
+            HashMap<String,String>[] hmArr = new HashMap[1];
+            String rstMsg ="WRITE SUCCESS";
+            HashMap<String,String> rstMap = new HashMap<>();
+            rstMap.put("code", rstMsg);
+            hmArr[0] = rstMap;
+
+            response.setResult(hmArr);
+            return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
+        }
+
+    }
+
+
 
 }

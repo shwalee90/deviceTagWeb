@@ -13,6 +13,7 @@ class TagInfoComponent extends Component {
                     equipid : 0,
                     data :[],
                     modalOpen :false,
+                    modalOpen2 :false,
                     memory_data : [],
                     currentTime : '',
                     realTimeVal : [],
@@ -130,6 +131,14 @@ class TagInfoComponent extends Component {
                 this.setState({ modalOpen: false })
             }
 
+            openModal2 = () => {
+                            this.setState({ modalOpen2: true })
+                        }
+            closeModal2 = () => {
+                this.setState({ modalOpen2: false })
+            }
+
+
             handlePageChange = async function(pageNum) {
               const pageList = await axios(`/auth/tagInfo/${this.props.equipid}?page=${pageNum-1}&size=${this.state.postPerPage}`,
               {
@@ -189,8 +198,8 @@ class TagInfoComponent extends Component {
                                                           <td> {el.time ? el.time : null} </td>
 
                                                           {el.tagaccess === "READ/WRITE" ?
-                                                          <td><button onClick={ this.openModal }> WRITE </button>
-                                                                              <TagWriteModal open={ this.state.modalOpen } close={ this.closeModal }
+                                                          <td><button onClick={ this.openModal2 }> WRITE </button>
+                                                                              <TagWriteModal open={ this.state.modalOpen2 } close={ this.closeModal2 }
                                                                                displayaddress = {el.displayaddress} id= {this.props.equipid} title="write Tag">
                                                                                </TagWriteModal>
                                                           </td> : null

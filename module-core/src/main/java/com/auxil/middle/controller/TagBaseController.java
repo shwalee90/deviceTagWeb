@@ -206,6 +206,8 @@ public class TagBaseController {
     @PostMapping("/auth/writeTag")
     public ResponseEntity writeTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult  ){
 
+        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
+
 
         tagWriteValidator.validate(map , bindingResult);
 
@@ -214,7 +216,7 @@ public class TagBaseController {
             response.setResult(bindingResult.getAllErrors());
             return new ResponseEntity<ApiResponse>(response, HttpStatus.valueOf(HttpStatus.OK.value()));
         }else{
-            tbService.insertTag(tagBase);
+            realTimeService.writeTag(map , tbEquipInfo);
             ApiResponse response = new ApiResponse();
 
             HashMap<String,String>[] hmArr = new HashMap[1];

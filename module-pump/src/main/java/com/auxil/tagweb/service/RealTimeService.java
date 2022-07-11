@@ -4,10 +4,7 @@ import com.auxil.tagweb.domain.TbEquipInfo;
 import com.auxil.tagweb.dto.RealTimeModbusConnDTO;
 import com.digitalpetri.modbus.master.ModbusTcpMaster;
 import com.digitalpetri.modbus.master.ModbusTcpMasterConfig;
-import com.digitalpetri.modbus.requests.ReadCoilsRequest;
-import com.digitalpetri.modbus.requests.ReadDiscreteInputsRequest;
-import com.digitalpetri.modbus.requests.ReadHoldingRegistersRequest;
-import com.digitalpetri.modbus.requests.ReadInputRegistersRequest;
+import com.digitalpetri.modbus.requests.*;
 import com.digitalpetri.modbus.responses.ReadCoilsResponse;
 import com.digitalpetri.modbus.responses.ReadDiscreteInputsResponse;
 import com.digitalpetri.modbus.responses.ReadHoldingRegistersResponse;
@@ -138,7 +135,31 @@ public class RealTimeService {
 
         return realTimeValueMap;
     }
+    public void writeTag(HashMap<String, String> map, TbEquipInfo tbEquipInfo) {
 
+        String address = map.get("address");
+
+        ModbusTcpMasterConfig config = new ModbusTcpMasterConfig.Builder(tbEquipInfo.getIp()).setPort(tbEquipInfo.getPort()).build();
+        ModbusTcpMaster master = new ModbusTcpMaster(config);
+
+        master.connect();
+
+        if(address.startsWith("C")){
+
+            int addr = Integer.parseInt(address.replace("C", ""));
+
+            master.sendRequest(new WriteSingleCoilRequest(addr ,Boolean.parseBoolean(map.get("writeValue"))), 0);
+
+        }
+
+        else if(address.startsWith("R")){
+            int addr = Integer.parseInt(address.replace("R", ""));
+
+            master.sendRequest(new WriteSingleRegisterRequest(addr , Integer.parseInt(map.get("writeValue"))), 0);
+
+        }
+
+    }
 
     public Map<String, Integer> getRedis(List<RealTimeModbusConnDTO> tagList, long equipid) {
 

@@ -137,17 +137,14 @@ public class ModbusValidate implements IEquipType {
             }
 
         }else if(address.startsWith("DI")){
-            if(writeValue == 0 || writeValue == 1 ){
-
-            }else{
-                valCheck = false;
-                code = "0 이나 1 을 입력해 주세요.";
-            }
+            valCheck = false;
+            code = "DI 는 읽기 전용입니다. C를 사용해주세요";
 
         }else if(address.startsWith("R")){
 
         }else if(address.startsWith("IR")){
-
+            valCheck = false;
+            code = "IR 는 읽기 전용입니다. R 를 사용해주세요";
         }else{
             valCheck = false;
             code = "데이터 메모리가 잘못되었습니다. C/DI/R/IR 가 아닙니다.";
