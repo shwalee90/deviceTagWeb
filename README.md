@@ -1,5 +1,5 @@
 # DEVICE TAG WEB
-개인 프로젝트 - 장비의 메모리값 실시간으로 보여주는 웹사이트 
+개인 프로젝트 포트폴리오 - 장비의 메모리값 실시간으로 보여주는 웹사이트 
 
 ## 필요 세팅
 - H2 DB구성 및 구동
@@ -11,7 +11,7 @@
 ## 모듈 설명
 - module-pump :  기본 웹 , react와 packaging을 위해서 jar 파일로 실행 필요
 - module-middle :  batch 서버용 ,  장비의 테그 및 시뮬레이터의 테그정보를 REDIS 로 주기적으로 READ
-- module-core 멀티 모듈을 위한 공통 모듈 (실행 X)
+- module-core :   멀티 모듈을 위한 공통 모듈 (실행 X)
 
 
 
