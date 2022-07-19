@@ -35,5 +35,6 @@
 
 ## DB구조 
 
-![tagWeb (1)](https://user-images.githubusercontent.com/104551163/179674622-2d39f710-f79f-47b2-985c-da2773e44bab.png)
+![tagWeb (2)](https://user-images.githubusercontent.com/104551163/179693985-8bb8a501-652e-4f0c-b5c8-353072f140a2.png)
+
 
