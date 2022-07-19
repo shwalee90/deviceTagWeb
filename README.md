@@ -32,3 +32,7 @@
 * 베치를 통해 주기적으로 REDIS 에 넣기
 * 시뮬레이터에 WRITE 
 * 테그와 메모리영역 검증 
+
+## DB구조 
+![tagWeb](https://user-images.githubusercontent.com/104551163/179672606-c6ecce87-d324-40a8-82fc-384953a2f19a.png)
+
