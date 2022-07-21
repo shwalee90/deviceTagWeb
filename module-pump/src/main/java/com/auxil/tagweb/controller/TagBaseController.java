@@ -235,6 +235,15 @@ public class TagBaseController {
 
     }
 
+    @PostMapping("/auth/deleteTag")
+    public void deleteTag(@RequestBody HashMap<String, String> map ){
+
+        String tagid = map.get("tagid");
+
+        tbService.deleteTag(tagid);
+
+
+    }
 
 
 }

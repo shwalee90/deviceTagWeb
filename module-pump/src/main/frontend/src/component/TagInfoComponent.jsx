@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import TagInputModal from './Modals/TagInputModal';
-import TagWriteModal from './Modals/TagWriteModal';
+import TagModifyModal from './Modals/TagModifyModal';
 import axios from "axios";
 import Paging from './Pagination/Paging';
 import '../css/Pagination.css';
@@ -197,13 +197,12 @@ class TagInfoComponent extends Component {
                                                           <td> {el.rtValue ? el.rtValue : 0}</td>
                                                           <td> {el.time ? el.time : null} </td>
 
-                                                          {el.tagaccess === "READ/WRITE" ?
-                                                          <td><button onClick={ this.openModal2 }> WRITE </button>
-                                                                              <TagWriteModal open={ this.state.modalOpen2 } close={ this.closeModal2 }
-                                                                               displayaddress = {el.displayaddress} id= {this.props.equipid} title="write Tag">
-                                                                               </TagWriteModal>
-                                                          </td> : null
-                                                          }
+
+                                                          <td><button onClick={ this.openModal2 }> 수정 </button>
+                                                                              <TagModifyModal open={ this.state.modalOpen2 } close={ this.closeModal2 } tagid = {el.tagid}
+                                                                               displayaddress = {el.displayaddress} id= {this.props.equipid} title="MODIFY Tag">
+                                                                               </TagModifyModal>
+                                                          </td>
 
                                                         </tr>
                                                       )

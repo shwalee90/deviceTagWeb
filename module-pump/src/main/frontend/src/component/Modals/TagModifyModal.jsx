@@ -3,7 +3,7 @@ import '../../css/Modal.css';
 import axios from "axios";
 import uuid from "react-uuid";
 
-class TagWriteModal extends Component {
+class TagModifyModal extends Component {
 
 
         constructor(props) {
@@ -13,6 +13,7 @@ class TagWriteModal extends Component {
                 writeValue : '',
                 rst_msg :[],
                 errCheck : '',
+
             }
 
             this.handleChange = this.handleChange.bind(this)
@@ -56,6 +57,25 @@ class TagWriteModal extends Component {
 
          }
 
+         deleteTag() {
+                          let data = {
+                                      id : this.props.id,
+                                      tagid : this.props.tagid,
+
+                                      };
+
+                          axios.post("/auth/deleteTag" , JSON.stringify(data),{
+                          headers: {
+                                             "Content-Type": `application/json`,
+                                             "token" : localStorage.getItem('token'),
+                                             }})
+                          .then(    this.props.close  )
+                  }
+
+
+
+
+
         render() {
           // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
           const { open, close, header } = this.props;
@@ -78,6 +98,10 @@ class TagWriteModal extends Component {
                           return (<li class="rstMsg_success">{el.code}</li>) }) :
                           rst_msg.map((el) => {
                           return (<li class="rstMsg" key={uuid()}>에러필드 : {el.field} 에러코드 :{el.code}</li>) }) }
+                        <li> TAG_ID : {this.props.tagid}</li>
+                        <li> EQUIP_ID : {this.props.id} </li>
+                        <li> DISPLAY_ADDRESS : {this.props.displayaddress} </li>
+                        <button className="btn btn-success" onClick={this.deleteTag}>DELETE</button>
                      </div>
                   </main>
 
@@ -94,4 +118,4 @@ class TagWriteModal extends Component {
 }
 
 
-export default TagWriteModal
+export default TagModifyModal

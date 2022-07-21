@@ -56,5 +56,8 @@ public class TbService {
        return tagRepository.countByEquipid(equipInfo);
     };
 
+    public void deleteTag(String tagid) { tagRepository.deleteById(Long.parseLong(tagid));
+    };
+
 
 }
