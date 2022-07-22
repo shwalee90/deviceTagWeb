@@ -16,6 +16,8 @@ class TagInfoComponent extends Component {
                     modalOpen2 :false,
                     memory_data : [],
                     currentTime : '',
+                    tagid: '',
+                    displayaddress: '',
                     realTimeVal : [],
                     rstMsg : '',
                     currentPage : 1,
@@ -23,6 +25,7 @@ class TagInfoComponent extends Component {
                     postPerPage : 10,
                   }
            this.handleClick = this.handleClick.bind(this);
+           this.refreshPage = this.refreshPage.bind(this);
          }
 
          handleClick(pageNum) {
@@ -131,8 +134,12 @@ class TagInfoComponent extends Component {
                 this.setState({ modalOpen: false })
             }
 
-            openModal2 = () => {
-                            this.setState({ modalOpen2: true })
+            openModal2 = (setTagid, setDisplayaddress , setTagaccess) => {
+                            this.setState({ modalOpen2: true,
+                                            tagid: setTagid,
+                                            displayaddress: setDisplayaddress,
+                                            tagaccess: setTagaccess
+                                            })
                         }
             closeModal2 = () => {
                 this.setState({ modalOpen2: false })
@@ -156,6 +163,29 @@ class TagInfoComponent extends Component {
 
 
               }
+
+              refreshPage = async function(equipid , postPerPage) {
+
+                            const pageList = await axios(`/auth/tagInfo/${equipid}?page=0&size=${postPerPage}`,
+                            {
+                              method : 'GET',
+                              headers: {
+                                         "Content-Type": `application/json`,
+                                         "token" : localStorage.getItem('token')
+                                                                             }
+                            })
+
+                               console.log(pageList);
+                               this.setState({ data : pageList,
+                                              currentPage : 0 ,
+                                })
+
+
+               }
+
+
+
+
 
     render() {
 
@@ -198,9 +228,10 @@ class TagInfoComponent extends Component {
                                                           <td> {el.time ? el.time : null} </td>
 
 
-                                                          <td><button onClick={ this.openModal2 }> 수정 </button>
-                                                                              <TagModifyModal open={ this.state.modalOpen2 } close={ this.closeModal2 } tagid = {el.tagid}
-                                                                               displayaddress = {el.displayaddress} id= {this.props.equipid} title="MODIFY Tag">
+                                                          <td><button onClick={ () => this.openModal2(el.tagid,el.displayaddress,el.tagaccess) }> 수정 </button>
+                                                                              <TagModifyModal open={ this.state.modalOpen2 } close={ this.closeModal2 } tagid = {this.state.tagid}
+                                                                               refreshTag = {this.refreshPage} postPerPage = {this.state.postPerPage} tagaccess = {this.state.tagaccess}
+                                                                               displayaddress = {this.state.displayaddress} equipid= {this.props.equipid} title="MODIFY Tag">
                                                                                </TagModifyModal>
                                                           </td>
 
