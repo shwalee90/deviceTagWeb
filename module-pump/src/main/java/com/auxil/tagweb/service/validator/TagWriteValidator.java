@@ -39,7 +39,7 @@ public class TagWriteValidator implements Validator {
 
         HashMap<String, String> hm = (HashMap<String, String>) target;
 
-        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(hm.get("id")));
+        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(hm.get("equipid")));
 
         String equipType = tbEquipInfo.getEquip_type().getEquip_type();
 

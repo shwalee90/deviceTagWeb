@@ -34,7 +34,7 @@ class TagModifyModal extends Component {
                  let data = {
                              writeValue : this.state.writeValue,
                              address : this.props.displayaddress,
-                             id : this.props.id,
+                             equipid : this.props.equipid,
                              };
                     axios.post("/auth/writeTagValue" , JSON.stringify(data),{
                      headers: {
@@ -45,12 +45,13 @@ class TagModifyModal extends Component {
                                   console.log(response)
                                   this.setState({ rst_msg : response.data.result ,
                                                   errCheck : response.data.result[0].code ,
+                                                  writeValue : '' ,
                                    })
                              })
                      .catch(function(error){
                         if(error.response){
                             console.log(error.response);
-                              this.setState({ rst_msg : error.response.data.result })
+                            this.setState({ rst_msg : error.response.data.result })
                         }
 
                      });
@@ -82,6 +83,7 @@ class TagModifyModal extends Component {
           const { open, close, header ,equipid , tagid , tagaccess } = this.props;
 
           let rst_msg = this.state.rst_msg;
+
 
           return (
             <div className={open ? 'openModal modal' : 'modal'}>

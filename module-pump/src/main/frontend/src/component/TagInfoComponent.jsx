@@ -138,7 +138,8 @@ class TagInfoComponent extends Component {
                             this.setState({ modalOpen2: true,
                                             tagid: setTagid,
                                             displayaddress: setDisplayaddress,
-                                            tagaccess: setTagaccess
+                                            tagaccess: setTagaccess,
+
                                             })
                         }
             closeModal2 = () => {

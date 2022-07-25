@@ -11,6 +11,7 @@ import com.auxil.tagweb.service.TestMod;
 import com.auxil.tagweb.service.validator.TagValidator;
 import com.auxil.tagweb.service.validator.TagWriteValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TagBaseController {
@@ -211,7 +212,11 @@ public class TagBaseController {
     @PostMapping("/auth/writeTagValue")
     public ResponseEntity writeTag(@RequestBody HashMap<String, String> map ,TbTagBase tagBase, BindingResult bindingResult  ){
 
-        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("id")));
+
+        String ei = map.get("equipid");
+        log.info(ei);
+
+        TbEquipInfo tbEquipInfo = tbService.findEquipById(Long.parseLong(map.get("equipid")));
 
 
         tagWriteValidator.validate(map , bindingResult);
