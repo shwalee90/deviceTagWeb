@@ -50,12 +50,18 @@
 
 ![redis 저장](https://user-images.githubusercontent.com/104551163/182080477-7604b7cc-8d71-4831-aa33-faed3a260eb2.PNG)
 
-베치 서버를 통해서 시뮬레이터의 값을 읽어서 redis로 저장 ( 현재 1분주기 ) , 두번째 폴링때 첫번째 폴링때 가지고 있는 값을 REDIS에 저장
+* 베치 서버를 통해서 시뮬레이터의 값을 읽어서 redis로 저장 ( 현재 1분주기 ) , 두번째 폴링때 첫번째 폴링때 가지고 있는 값을 REDIS에 저장
 
 ![simulator read 화면 창](https://user-images.githubusercontent.com/104551163/182082325-618165db-b5ef-4cda-86dd-60d1bc1472ce.PNG)
 
-REDIS 에서 10초 단위로 web화면으로 값 가져오기 
+* REDIS 에서 10초 단위로 web화면으로 값 가져오기 
 
+
+![success](https://user-images.githubusercontent.com/104551163/182088544-01ec3f6a-9e39-410f-a811-3b58c5bbc45e.PNG)
+![tag등록 validation](https://user-images.githubusercontent.com/104551163/182088557-894f3daf-dd55-4646-9423-2a56edd1cc92.PNG)
+![validation에러](https://user-images.githubusercontent.com/104551163/182088566-4ac5a2b1-a660-420f-944f-e1c3ec271123.PNG)
+
+* 테그 이름 중복 및 테그 메모리와 데이터 타입  검증 
 
 ## DB구조 
 
