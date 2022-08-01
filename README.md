@@ -56,9 +56,9 @@
 
 * REDIS 에서 10초 단위로 web화면으로 값 가져오기 
 
-<img src="https://user-images.githubusercontent.com/104551163/182088544-01ec3f6a-9e39-410f-a811-3b58c5bbc45e.PNG"  width="200" />
-<img src="https://user-images.githubusercontent.com/104551163/182088557-894f3daf-dd55-4646-9423-2a56edd1cc92.PNG"  width="200" />                             
-<img src="https://user-images.githubusercontent.com/104551163/182088566-4ac5a2b1-a660-420f-944f-e1c3ec271123.PNG"  width="200" />                                                                                                            
+<img src="https://user-images.githubusercontent.com/104551163/182088544-01ec3f6a-9e39-410f-a811-3b58c5bbc45e.PNG"   float:left; width: 33% />
+<img src="https://user-images.githubusercontent.com/104551163/182088557-894f3daf-dd55-4646-9423-2a56edd1cc92.PNG"   float:left; width: 33% />  
+<img src="https://user-images.githubusercontent.com/104551163/182088566-4ac5a2b1-a660-420f-944f-e1c3ec271123.PNG"   float:left; width: 33% />                                                                                                            
 
 * 테그 이름 중복 및 테그 메모리와 데이터 타입  검증 
 
