@@ -14,7 +14,4 @@ public class MiddleApplication {
         SpringApplication.run(MiddleApplication.class, args);
     }
 
-
-
-
 }

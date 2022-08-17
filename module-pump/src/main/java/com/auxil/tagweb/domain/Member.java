@@ -23,7 +23,6 @@ public class Member  {
     @ApiModelProperty(value = "uid" , example = "24235" , required = true)
     private long id;
 
-
     @Column(nullable = false, length = 20)
     @ApiModelProperty(value = "유저이름" , example = "shwalee" , required = true)
     private String name;
